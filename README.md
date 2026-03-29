@@ -1,5 +1,8 @@
-# 💼📊 App CasaCerta - Simulador Comparativo de Financiamento vs. Consórcio Imobiliário
-Projeto acadêmico de Análise e Desenvolvimento de Sistemas desenvolvido segundo orientações do professor Francisco Pereira Junior como Certificadora de Competência Específica.
+# 🏠📊 App CasaCerta - Simulador Comparativo de Financiamento vs. Consórcio Imobiliário
+Projeto acadêmico de Análise e Desenvolvimento de Sistemas desenvolvido segundo orientações do professor Francisco Pereira Junior como Certificadora de Competência Específica.    
+> [🔗 Google Docs](https://docs.google.com/document/d/15NBZdFeqs7tKUhBLr_yfHc0_uiupBTbXF8tcNEgLIV8/edit?usp=sharing)
+
+---
 
 ## 📑 Escopo/Contexto
 O grupo F foi responsável por documentar e projetar uma aplicação web desenvolvida para simular e comparar diferentes modalidades de aquisição de imóveis, como financiamento e consórcio, oferecendo ao usuário uma visão clara de custos, parcelas e condições para apoiar a tomada de decisão.
@@ -30,8 +33,11 @@ Foi proposta a documentação e prototipação de um sistema que contempla:
 
 **Grupo F - Integrantes:**
 
-- 👤 Natália Cuqui Barbosa
+- 👤 Natália Cuqui Barbosa    
+  🔗 GitHub: [@ncuqui](https://github.com/ncuqui)
+  
+- 👤 Débora Batista Pereira de Almeida    
+  🔗 GitHub: [@deborabat](https://github.com/deborabat)
 
-- 👤 Débora Batista Pereira de Almeida
-
-- 👤 Davi Leme de Castro Nascimento Batista
+- 👤 Davi Leme de Castro Nascimento Batista   
+  🔗 GitHub:
