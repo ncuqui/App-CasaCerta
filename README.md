@@ -40,4 +40,4 @@ Foi proposta a documentação e prototipação de um sistema que contempla:
   🔗 GitHub: [@deborabat](https://github.com/deborabat)
 
 - 👤 Davi Leme de Castro Nascimento Batista   
-  🔗 GitHub:
+  🔗 GitHub: [@devdvi](https://github.com/devdvi)
