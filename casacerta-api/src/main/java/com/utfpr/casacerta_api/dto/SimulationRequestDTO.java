@@ -25,10 +25,8 @@ public class SimulationRequestDTO {
     private BigDecimal downPayment;
 
     @Valid
-    @NotNull
     private FinancingRequestDTO financing;
 
     @Valid
-    @NotNull
     private ConsortiumRequestDTO consortium;
 }

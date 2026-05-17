@@ -27,6 +27,10 @@ public class SimulationService {
 
     @Transactional
     public SimulationResponseDTO simulate(SimulationRequestDTO dto) {
+        if (dto.getFinancing() == null && dto.getConsortium() == null) {
+            throw new IllegalArgumentException("At least one modality (financing or consortium) must be provided.");
+        }
+
         User user = userRepository.findById(dto.getUserId())
                 .orElseThrow(() -> new EntityNotFoundException("User not found with id: " + dto.getUserId()));
 
@@ -37,18 +41,33 @@ public class SimulationService {
                 .downPayment(dto.getDownPayment())
                 .build();
 
-        // Calculate both modalities
-        FinancingSimulation financing = financingService.calculate(simulation, dto.getFinancing());
-        ConsortiumSimulation consortium = consortiumService.calculate(simulation, dto.getConsortium());
+        // Calculate available modalities
+        FinancingSimulation financing = null;
+        ConsortiumSimulation consortium = null;
 
-        // Determine recommendation based on total cost
-        RecommendationType recommendation = financing.getTotalCost()
-                .compareTo(consortium.getTotalCost()) <= 0
-                ? RecommendationType.FINANCING
-                : RecommendationType.CONSORTIUM;
+        if (dto.getFinancing() != null) {
+            financing = financingService.calculate(simulation, dto.getFinancing());
+            simulation.setFinancing(financing);
+        }
 
-        simulation.setFinancing(financing);
-        simulation.setConsortium(consortium);
+        if (dto.getConsortium() != null) {
+            consortium = consortiumService.calculate(simulation, dto.getConsortium());
+            simulation.setConsortium(consortium);
+        }
+
+        // Determine recommendation
+        RecommendationType recommendation;
+        if (financing != null && consortium != null) {
+            recommendation = financing.getTotalCost()
+                    .compareTo(consortium.getTotalCost()) <= 0
+                    ? RecommendationType.FINANCING
+                    : RecommendationType.CONSORTIUM;
+        } else if (financing != null) {
+            recommendation = RecommendationType.FINANCING;
+        } else {
+            recommendation = RecommendationType.CONSORTIUM;
+        }
+
         simulation.setRecommendation(recommendation);
 
         Simulation saved = simulationRepository.save(simulation);
@@ -70,6 +89,14 @@ public class SimulationService {
                 .toList();
     }
 
+    @Transactional
+    public void deleteById(Long id) {
+        if (!simulationRepository.existsById(id)) {
+            throw new EntityNotFoundException("Simulation not found with id: " + id);
+        }
+        simulationRepository.deleteById(id);
+    }
+
     // -------------------------------------------------------------------------
     // Mapping
     // -------------------------------------------------------------------------
@@ -78,29 +105,36 @@ public class SimulationService {
         FinancingSimulation f = simulation.getFinancing();
         ConsortiumSimulation c = simulation.getConsortium();
 
-        return SimulationResponseDTO.builder()
+        SimulationResponseDTO.SimulationResponseDTOBuilder builder = SimulationResponseDTO.builder()
                 .id(simulation.getId())
                 .propertyValue(simulation.getPropertyValue())
                 .downPayment(simulation.getDownPayment())
                 .recommendation(simulation.getRecommendation())
-                .createdAt(simulation.getCreatedAt())
-                .financing(SimulationResponseDTO.FinancingResultDTO.builder()
-                        .termMonths(f.getTermMonths())
-                        .annualInterestRate(f.getAnnualInterestRate())
-                        .amortizationType(f.getAmortizationType())
-                        .installmentValue(f.getInstallmentValue())
-                        .totalCost(f.getTotalCost())
-                        .totalInterest(f.getTotalInterest())
-                        .build())
-                .consortium(SimulationResponseDTO.ConsortiumResultDTO.builder()
-                        .termMonths(c.getTermMonths())
-                        .annualAdminFee(c.getAnnualAdminFee())
-                        .reserveFund(c.getReserveFund())
-                        .bidPercentage(c.getBidPercentage())
-                        .monthlyContribution(c.getMonthlyContribution())
-                        .totalCost(c.getTotalCost())
-                        .totalAdminFee(c.getTotalAdminFee())
-                        .build())
-                .build();
+                .createdAt(simulation.getCreatedAt());
+
+        if (f != null) {
+            builder.financing(SimulationResponseDTO.FinancingResultDTO.builder()
+                    .termMonths(f.getTermMonths())
+                    .annualInterestRate(f.getAnnualInterestRate())
+                    .amortizationType(f.getAmortizationType())
+                    .installmentValue(f.getInstallmentValue())
+                    .totalCost(f.getTotalCost())
+                    .totalInterest(f.getTotalInterest())
+                    .build());
+        }
+
+        if (c != null) {
+            builder.consortium(SimulationResponseDTO.ConsortiumResultDTO.builder()
+                    .termMonths(c.getTermMonths())
+                    .annualAdminFee(c.getAnnualAdminFee())
+                    .reserveFund(c.getReserveFund())
+                    .bidPercentage(c.getBidPercentage())
+                    .monthlyContribution(c.getMonthlyContribution())
+                    .totalCost(c.getTotalCost())
+                    .totalAdminFee(c.getTotalAdminFee())
+                    .build());
+        }
+
+        return builder.build();
     }
 }

@@ -45,4 +45,14 @@ public class SimulationController {
     public ResponseEntity<List<SimulationResponseDTO>> findByUser(@RequestParam Long userId) {
         return ResponseEntity.ok(simulationService.findByUserId(userId));
     }
+
+    /**
+     * DELETE /api/simulations/{id}
+     * Deletes a simulation by ID.
+     */
+    @DeleteMapping("/{id}")
+    public ResponseEntity<Void> delete(@PathVariable Long id) {
+        simulationService.deleteById(id);
+        return ResponseEntity.noContent().build();
+    }
 }
