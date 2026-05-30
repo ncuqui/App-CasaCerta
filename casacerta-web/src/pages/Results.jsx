@@ -1,11 +1,82 @@
 import { useNavigate } from 'react-router-dom';
 import DashboardLayout from '../components/DashboardLayout';
 import { useSimulation } from '../context/SimulationContext';
+import {
+    BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip,
+    Legend, ResponsiveContainer, Cell,
+    LineChart, Line,
+} from 'recharts';
 
 const fmt = (value) =>
     value != null
         ? `R$ ${Number(value).toLocaleString('pt-BR', { minimumFractionDigits: 2 })}`
         : '—';
+
+const fmtShort = (value) =>
+    value != null
+        ? `R$ ${Number(value).toLocaleString('pt-BR', { minimumFractionDigits: 0, maximumFractionDigits: 0 })}`
+        : '—';
+
+// Calcula taxa mensal equivalente a partir da anual
+function monthlyRate(annualRate) {
+    return Math.pow(1 + annualRate / 100, 1 / 12) - 1;
+}
+
+// Composição da parcela de financiamento
+function calcFinancingBreakdown(financing) {
+    if (!financing) return null;
+    const financed = financing.totalCost - financing.totalInterest;
+    if (financing.amortizationType === 'SAC') {
+        const mRate = monthlyRate(financing.annualInterestRate);
+        const amortization = financed / financing.termMonths;
+        const firstInterest = financed * mRate;
+        const lastInterest = amortization * mRate;
+        const firstInstallment = amortization + firstInterest;
+        const lastInstallment = amortization + lastInterest;
+        return {
+            type: 'SAC',
+            firstInstallment,
+            lastInstallment,
+            amortization,
+            firstInterest,
+            lastInterest,
+            firstPrincipalPct: Math.round((amortization / firstInstallment) * 100),
+            firstInterestPct: Math.round((firstInterest / firstInstallment) * 100),
+        };
+    } else {
+        // PRICE — parcela fixa, composição média
+        const avgPrincipal = financed / financing.termMonths;
+        const avgInterest = financing.totalInterest / financing.termMonths;
+        const installment = financing.installmentValue;
+        return {
+            type: 'PRICE',
+            installment,
+            avgPrincipal,
+            avgInterest,
+            principalPct: Math.round((avgPrincipal / installment) * 100),
+            interestPct: Math.round((avgInterest / installment) * 100),
+        };
+    }
+}
+
+// Composição da contribuição mensal do consórcio
+function calcConsortiumBreakdown(consortium, propertyValue) {
+    if (!consortium || !propertyValue) return null;
+    const pv = Number(propertyValue);
+    const principal = pv / consortium.termMonths;
+    const adminFee = pv * (consortium.annualAdminFee / 100) / 12;
+    const reserveFund = pv * ((consortium.reserveFund || 0) / 100) / 12;
+    const total = principal + adminFee + reserveFund;
+    return {
+        principal,
+        adminFee,
+        reserveFund,
+        total,
+        principalPct: Math.round((principal / total) * 100),
+        adminFeePct: Math.round((adminFee / total) * 100),
+        reserveFundPct: Math.round((reserveFund / total) * 100),
+    };
+}
 
 export default function Results() {
     const navigate = useNavigate();
@@ -38,6 +109,9 @@ export default function Results() {
             ? 'Resultado — Financiamento'
             : 'Resultado — Consórcio';
 
+    const financingBreakdown = calcFinancingBreakdown(financing);
+    const consortiumBreakdown = calcConsortiumBreakdown(consortium, results.propertyValue);
+
     return (
         <DashboardLayout title={pageTitle}>
             <div className="max-w-5xl space-y-5">
@@ -57,17 +131,49 @@ export default function Results() {
                     </p>
                 </div>
 
-                <div className="flex gap-5">
+                {/* ── 2.1 Hero: métricas principais em destaque ── */}
+                {hasBoth && (
+                    <ComparisonHero
+                        financing={financing}
+                        consortium={consortium}
+                        recommendation={recommendation}
+                    />
+                )}
+                {hasOnlyFinancing && <SingleHero financing={financing} />}
+                {hasOnlyConsortium && <SingleHero consortium={consortium} />}
 
-                    {/* Main content */}
+                <div className="flex gap-5">
                     <div className="flex-1 space-y-4">
 
-                        {/* Comparison view (both modalities) */}
-                        {hasBoth && <ComparisonView financing={financing} consortium={consortium} recommendation={recommendation} />}
-
-                        {/* Single modality views */}
-                        {hasOnlyFinancing && <FinancingOnlyView financing={financing} propertyValue={results.propertyValue} />}
-                        {hasOnlyConsortium && <ConsortiumOnlyView consortium={consortium} propertyValue={results.propertyValue} />}
+                        {/* Detalhes + breakdown */}
+                        {hasBoth && (
+                            <>
+                                <ComparisonDetail
+                                    financing={financing}
+                                    consortium={consortium}
+                                    recommendation={recommendation}
+                                    financingBreakdown={financingBreakdown}
+                                    consortiumBreakdown={consortiumBreakdown}
+                                    propertyValue={results.propertyValue}
+                                />
+                                <CostComparisonChart financing={financing} consortium={consortium} />
+                                <InstallmentEvolutionChart financing={financing} consortium={consortium} />
+                            </>
+                        )}
+                        {hasOnlyFinancing && (
+                            <FinancingDetail
+                                financing={financing}
+                                propertyValue={results.propertyValue}
+                                breakdown={financingBreakdown}
+                            />
+                        )}
+                        {hasOnlyConsortium && (
+                            <ConsortiumDetail
+                                consortium={consortium}
+                                propertyValue={results.propertyValue}
+                                breakdown={consortiumBreakdown}
+                            />
+                        )}
 
                         {/* Actions */}
                         <div className="flex gap-3">
@@ -94,7 +200,7 @@ export default function Results() {
                         </div>
                     </div>
 
-                    {/* Side summary */}
+                    {/* Sidebar */}
                     <div className="w-64 flex-shrink-0 flex flex-col gap-4">
                         {hasBoth && (
                             <>
@@ -104,18 +210,19 @@ export default function Results() {
                                         <SummaryItem label="Melhor alternativa"
                                                      value={recommendation === 'CONSORTIUM' ? 'Consórcio' : 'Financiamento'}
                                                      highlight />
-                                        <SummaryItem label="Diferença de custo"
+                                        <SummaryItem label="Economia estimada"
                                                      value={fmt(Math.abs(financing.totalCost - consortium.totalCost))} />
-                                        <SummaryItem label="Diferença de parcela"
+                                        <SummaryItem label="Dif. de parcela"
                                                      value={fmt(Math.abs(financing.installmentValue - consortium.monthlyContribution))} />
                                     </div>
                                 </div>
                                 <div className="bg-white rounded-2xl shadow-sm p-5">
-                                    <h3 className="font-bold text-gray-800 mb-3 text-sm">Justificativas</h3>
+                                    <h3 className="font-bold text-gray-800 mb-3 text-sm">Considerações</h3>
                                     <div className="flex flex-col gap-2 text-xs text-gray-500">
                                         <p>💰 {recommendation === 'CONSORTIUM' ? 'Consórcio' : 'Financiamento'} tem menor custo global.</p>
-                                        <p>📉 Parcela mais compatível com orçamento conservador.</p>
-                                        <p>⏱ Financiamento é mais indicado quando urgência é o fator principal.</p>
+                                        <p>🏠 Financiamento garante posse imediata do imóvel.</p>
+                                        <p>⏱ Consórcio exige aguardar a contemplação pelo sorteio ou lance.</p>
+                                        <p>📈 Lance maior no consórcio reduz o tempo de espera.</p>
                                     </div>
                                 </div>
                             </>
@@ -131,7 +238,6 @@ export default function Results() {
                             </div>
                         )}
                     </div>
-
                 </div>
             </div>
         </DashboardLayout>
@@ -139,74 +245,214 @@ export default function Results() {
 }
 
 /* ------------------------------------------------------------------ */
-/* Comparison view (both modalities)                                   */
+/* 2.1 — Hero: métricas principais em destaque                         */
 /* ------------------------------------------------------------------ */
-function ComparisonView({ financing, consortium, recommendation }) {
+function ComparisonHero({ financing, consortium, recommendation }) {
     const isConsortiumBetter = recommendation === 'CONSORTIUM';
+    const winner = isConsortiumBetter ? consortium : financing;
+    const loser = isConsortiumBetter ? financing : consortium;
+    const winnerLabel = isConsortiumBetter ? 'Consórcio' : 'Financiamento';
+    const loserLabel = isConsortiumBetter ? 'Financiamento' : 'Consórcio';
+    const winnerPayment = isConsortiumBetter ? consortium.monthlyContribution : financing.installmentValue;
+    const loserPayment = isConsortiumBetter ? financing.installmentValue : consortium.monthlyContribution;
+    const winnerTerm = winner.termMonths;
+    const loserTerm = loser.termMonths;
+    const saving = Math.abs(financing.totalCost - consortium.totalCost);
 
     return (
-        <div className="bg-white rounded-2xl shadow-sm p-5">
-            <h3 className="font-bold text-gray-800 mb-4">Comparativo final</h3>
-
-            <div className="grid grid-cols-2 gap-4 mb-5">
-                {/* Financing */}
-                <div className={`rounded-xl border-2 p-4 ${isConsortiumBetter ? 'border-orange-200 bg-orange-50' : 'border-green-200 bg-green-50'}`}>
-                    <div className="flex items-center justify-between mb-3">
-                        <div>
-                            <p className="font-bold text-gray-800">🏦 Financiamento</p>
-                            <p className="text-xs text-gray-500">Posse imediata</p>
-                        </div>
-                        <span className={`text-xs font-semibold px-2 py-1 rounded-full ${isConsortiumBetter ? 'bg-orange-100 text-orange-600' : 'bg-green-100 text-green-600'}`}>
-                            {isConsortiumBetter ? 'Maior custo' : 'Melhor resultado'}
-                        </span>
-                    </div>
-                    <div className="flex flex-col gap-2 text-sm">
-                        <Row label="Custo total" value={fmt(financing.totalCost)} bold />
-                        <Row label="Parcela estimada" value={fmt(financing.installmentValue)} />
-                        <Row label="Prazo" value={`${financing.termMonths} meses`} />
-                        <Row label="Vantagem" value="Imediatismo" bold />
-                    </div>
+        <div className="grid grid-cols-3 gap-4">
+            {/* Vencedor */}
+            <div className="col-span-1 bg-green-50 border-2 border-green-300 rounded-2xl p-4 flex flex-col gap-1">
+                <div className="flex items-center justify-between mb-1">
+                    <span className="text-xs font-bold text-green-700 uppercase tracking-wide">✅ Recomendado</span>
                 </div>
-
-                {/* Consortium */}
-                <div className={`rounded-xl border-2 p-4 ${isConsortiumBetter ? 'border-green-200 bg-green-50' : 'border-orange-200 bg-orange-50'}`}>
-                    <div className="flex items-center justify-between mb-3">
-                        <div>
-                            <p className="font-bold text-gray-800">🤝 Consórcio</p>
-                            <p className="text-xs text-gray-500">Contemplação variável</p>
-                        </div>
-                        <span className={`text-xs font-semibold px-2 py-1 rounded-full ${isConsortiumBetter ? 'bg-green-100 text-green-600' : 'bg-orange-100 text-orange-600'}`}>
-                            {isConsortiumBetter ? 'Melhor resultado' : 'Maior custo'}
-                        </span>
-                    </div>
-                    <div className="flex flex-col gap-2 text-sm">
-                        <Row label="Custo total" value={fmt(consortium.totalCost)} bold />
-                        <Row label="Contribuição mensal" value={fmt(consortium.monthlyContribution)} />
-                        <Row label="Prazo" value={`${consortium.termMonths} meses`} />
-                        <Row label="Vantagem" value="Economia" bold />
-                    </div>
+                <p className="font-bold text-gray-800">{winnerLabel}</p>
+                <p className="text-2xl font-extrabold text-green-700">{fmtShort(winner.totalCost)}</p>
+                <p className="text-xs text-gray-500">custo total</p>
+                <div className="mt-2 pt-2 border-t border-green-200 flex flex-col gap-1 text-xs text-gray-600">
+                    <span>{fmt(winnerPayment)}<span className="text-gray-400">/mês</span></span>
+                    <span>{winnerTerm} meses</span>
                 </div>
             </div>
 
-            {/* Recommendation */}
-            <div className="bg-green-50 border border-green-200 rounded-xl p-4">
-                <p className="font-bold text-green-700 mb-1">
-                    ✅ Recomendação: {isConsortiumBetter ? 'Consórcio' : 'Financiamento'}
-                </p>
-                <p className="text-sm text-gray-600">
-                    Com base nos valores informados, o {isConsortiumBetter ? 'consórcio' : 'financiamento'} apresentou
-                    menor custo total. O {isConsortiumBetter ? 'financiamento' : 'consórcio'} é mais indicado quando{' '}
-                    {isConsortiumBetter ? 'a posse imediata é indispensável' : 'o prazo longo é aceitável'}.
-                </p>
+            {/* Economia */}
+            <div className="col-span-1 bg-violet-600 rounded-2xl p-4 flex flex-col items-center justify-center text-white text-center">
+                <p className="text-xs font-semibold text-violet-200 mb-1">Você economiza</p>
+                <p className="text-3xl font-extrabold">{fmtShort(saving)}</p>
+                <p className="text-xs text-violet-200 mt-1">escolhendo {winnerLabel}</p>
+            </div>
+
+            {/* Perdedor */}
+            <div className="col-span-1 bg-orange-50 border-2 border-orange-200 rounded-2xl p-4 flex flex-col gap-1">
+                <div className="flex items-center justify-between mb-1">
+                    <span className="text-xs font-bold text-orange-600 uppercase tracking-wide">Maior custo</span>
+                </div>
+                <p className="font-bold text-gray-800">{loserLabel}</p>
+                <p className="text-2xl font-extrabold text-orange-600">{fmtShort(loser.totalCost)}</p>
+                <p className="text-xs text-gray-500">custo total</p>
+                <div className="mt-2 pt-2 border-t border-orange-200 flex flex-col gap-1 text-xs text-gray-600">
+                    <span>{fmt(loserPayment)}<span className="text-gray-400">/mês</span></span>
+                    <span>{loserTerm} meses</span>
+                </div>
+            </div>
+        </div>
+    );
+}
+
+function SingleHero({ financing, consortium }) {
+    const data = financing || consortium;
+    const isFinancing = !!financing;
+    const payment = isFinancing ? financing?.installmentValue : consortium?.monthlyContribution;
+    const paymentLabel = isFinancing ? 'Parcela estimada' : 'Contribuição mensal';
+
+    return (
+        <div className="grid grid-cols-3 gap-4">
+            <div className="bg-white rounded-2xl shadow-sm p-4 flex flex-col gap-1">
+                <p className="text-xs text-gray-400">Custo total</p>
+                <p className="text-2xl font-extrabold text-gray-800">{fmtShort(data.totalCost)}</p>
+            </div>
+            <div className="bg-white rounded-2xl shadow-sm p-4 flex flex-col gap-1">
+                <p className="text-xs text-gray-400">{paymentLabel}</p>
+                <p className="text-2xl font-extrabold text-violet-600">{fmt(payment)}</p>
+            </div>
+            <div className="bg-white rounded-2xl shadow-sm p-4 flex flex-col gap-1">
+                <p className="text-xs text-gray-400">Prazo</p>
+                <p className="text-2xl font-extrabold text-gray-800">{data.termMonths}<span className="text-base font-semibold text-gray-400"> meses</span></p>
+                <p className="text-xs text-gray-400">{(data.termMonths / 12).toFixed(1).replace('.0', '')} anos</p>
             </div>
         </div>
     );
 }
 
 /* ------------------------------------------------------------------ */
-/* Financing-only view                                                 */
+/* 2.2 — Barra de composição da parcela                                */
 /* ------------------------------------------------------------------ */
-function FinancingOnlyView({ financing, propertyValue }) {
+function BreakdownBar({ segments }) {
+    // segments: [{ label, value, pct, color }]
+    return (
+        <div className="mt-4">
+            <p className="text-xs font-semibold text-gray-600 mb-2">Composição da parcela</p>
+            {/* Barra visual */}
+            <div className="flex h-3 rounded-full overflow-hidden w-full mb-3 gap-px bg-gray-100">
+                {segments.map((seg, i) => (
+                    <div
+                        key={i}
+                        className={`${seg.color} transition-all`}
+                        style={{ width: `${seg.pct}%` }}
+                    />
+                ))}
+            </div>
+            {/* Legenda */}
+            <div className="flex flex-col gap-1.5">
+                {segments.map((seg, i) => (
+                    <div key={i} className="flex items-center justify-between text-xs">
+                        <div className="flex items-center gap-2">
+                            <span className={`w-2.5 h-2.5 rounded-sm ${seg.color} flex-shrink-0`} />
+                            <span className="text-gray-500">{seg.label}</span>
+                        </div>
+                        <div className="flex items-center gap-2">
+                            <span className="font-semibold text-gray-700">{fmt(seg.value)}</span>
+                            <span className="text-gray-400 w-8 text-right">{seg.pct}%</span>
+                        </div>
+                    </div>
+                ))}
+            </div>
+        </div>
+    );
+}
+
+function FinancingBreakdownSection({ breakdown }) {
+    if (!breakdown) return null;
+
+    if (breakdown.type === 'SAC') {
+        return (
+            <div className="mt-4 pt-4 border-t border-gray-100">
+                <p className="text-xs font-semibold text-gray-600 mb-3">Composição da parcela (SAC)</p>
+                <div className="grid grid-cols-2 gap-3 mb-3">
+                    <div className="bg-blue-50 rounded-lg p-3">
+                        <p className="text-xs text-gray-400 mb-1">1ª parcela</p>
+                        <p className="font-bold text-gray-800">{fmt(breakdown.firstInstallment)}</p>
+                    </div>
+                    <div className="bg-gray-50 rounded-lg p-3">
+                        <p className="text-xs text-gray-400 mb-1">Última parcela</p>
+                        <p className="font-bold text-gray-800">{fmt(breakdown.lastInstallment)}</p>
+                    </div>
+                </div>
+                <BreakdownBar segments={[
+                    { label: 'Amortização (principal)', value: breakdown.amortization, pct: breakdown.firstPrincipalPct, color: 'bg-blue-500' },
+                    { label: 'Juros (1ª parcela)', value: breakdown.firstInterest, pct: breakdown.firstInterestPct, color: 'bg-orange-400' },
+                ]} />
+                <p className="text-xs text-gray-400 mt-2">* Composição referente à 1ª parcela. A amortização é constante; os juros diminuem a cada mês.</p>
+            </div>
+        );
+    }
+
+    return (
+        <div className="mt-4 pt-4 border-t border-gray-100">
+            <BreakdownBar segments={[
+                { label: 'Amortização (média)', value: breakdown.avgPrincipal, pct: breakdown.principalPct, color: 'bg-blue-500' },
+                { label: 'Juros (média)', value: breakdown.avgInterest, pct: breakdown.interestPct, color: 'bg-orange-400' },
+            ]} />
+            <p className="text-xs text-gray-400 mt-2">* Composição média ao longo do prazo. No PRICE, a parcela é fixa e os juros decrescem mês a mês.</p>
+        </div>
+    );
+}
+
+function ConsortiumBreakdownSection({ breakdown }) {
+    if (!breakdown) return null;
+    return (
+        <div className="mt-4 pt-4 border-t border-gray-100">
+            <BreakdownBar segments={[
+                { label: 'Carta de crédito (principal)', value: breakdown.principal, pct: breakdown.principalPct, color: 'bg-green-500' },
+                { label: 'Taxa administrativa', value: breakdown.adminFee, pct: breakdown.adminFeePct, color: 'bg-amber-400' },
+                ...(breakdown.reserveFund > 0 ? [{ label: 'Fundo de reserva', value: breakdown.reserveFund, pct: breakdown.reserveFundPct, color: 'bg-red-300' }] : []),
+            ]} />
+        </div>
+    );
+}
+
+/* ------------------------------------------------------------------ */
+/* Detail cards (comparison + individual)                              */
+/* ------------------------------------------------------------------ */
+function ComparisonDetail({ financing, consortium, recommendation, financingBreakdown, consortiumBreakdown, propertyValue }) {
+    const isConsortiumBetter = recommendation === 'CONSORTIUM';
+    return (
+        <div className="bg-white rounded-2xl shadow-sm p-5">
+            <h3 className="font-bold text-gray-800 mb-4">Detalhes comparativos</h3>
+            <div className="grid grid-cols-2 gap-4">
+                {/* Financiamento */}
+                <div className={`rounded-xl border-2 p-4 ${isConsortiumBetter ? 'border-orange-200 bg-orange-50' : 'border-green-200 bg-green-50'}`}>
+                    <p className="font-bold text-gray-800 mb-1">🏦 Financiamento</p>
+                    <p className="text-xs text-gray-500 mb-3">Posse imediata do imóvel</p>
+                    <div className="flex flex-col gap-2 text-sm">
+                        <Row label="Custo total" value={fmt(financing.totalCost)} bold />
+                        <Row label="Parcela" value={fmt(financing.installmentValue)} />
+                        <Row label="Total de juros" value={fmt(financing.totalInterest)} />
+                        <Row label="Prazo" value={`${financing.termMonths} meses`} />
+                        <Row label="Amortização" value={financing.amortizationType} />
+                    </div>
+                    <FinancingBreakdownSection breakdown={financingBreakdown} />
+                </div>
+
+                {/* Consórcio */}
+                <div className={`rounded-xl border-2 p-4 ${isConsortiumBetter ? 'border-green-200 bg-green-50' : 'border-orange-200 bg-orange-50'}`}>
+                    <p className="font-bold text-gray-800 mb-1">🤝 Consórcio</p>
+                    <p className="text-xs text-gray-500 mb-3">Contemplação por sorteio ou lance</p>
+                    <div className="flex flex-col gap-2 text-sm">
+                        <Row label="Custo total" value={fmt(consortium.totalCost)} bold />
+                        <Row label="Contribuição mensal" value={fmt(consortium.monthlyContribution)} />
+                        <Row label="Total de taxas adm." value={fmt(consortium.totalAdminFee)} />
+                        <Row label="Prazo" value={`${consortium.termMonths} meses`} />
+                        <Row label="Lance" value={`${consortium.bidPercentage?.toFixed(1)}%`} />
+                    </div>
+                    <ConsortiumBreakdownSection breakdown={consortiumBreakdown} />
+                </div>
+            </div>
+        </div>
+    );
+}
+
+function FinancingDetail({ financing, propertyValue, breakdown }) {
     return (
         <div className="bg-white rounded-2xl shadow-sm p-5">
             <div className="flex items-center gap-3 mb-4">
@@ -219,32 +465,20 @@ function FinancingOnlyView({ financing, propertyValue }) {
                 </div>
             </div>
 
-            <div className="grid grid-cols-2 gap-4">
-                <div className="bg-gray-50 rounded-xl p-4">
-                    <p className="text-xs text-gray-400 mb-1">Custo total</p>
-                    <p className="text-xl font-bold text-gray-800">{fmt(financing.totalCost)}</p>
-                </div>
-                <div className="bg-gray-50 rounded-xl p-4">
-                    <p className="text-xs text-gray-400 mb-1">Parcela estimada</p>
-                    <p className="text-xl font-bold text-gray-800">{fmt(financing.installmentValue)}</p>
-                </div>
-            </div>
-
-            <div className="mt-4 flex flex-col gap-2 text-sm">
+            <div className="flex flex-col gap-2 text-sm mb-4">
                 <Row label="Valor do imóvel" value={fmt(propertyValue)} />
-                <Row label="Prazo" value={`${financing.termMonths} meses`} />
-                <Row label="Taxa de juros anual" value={`${financing.annualInterestRate}%`} />
-                <Row label="Amortização" value={financing.amortizationType} />
+                <Row label="Prazo" value={`${financing.termMonths} meses (${(financing.termMonths / 12).toFixed(1).replace('.0', '')} anos)`} />
+                <Row label="Taxa de juros anual" value={`${financing.annualInterestRate}% a.a.`} />
+                <Row label="Amortização" value={financing.amortizationType === 'SAC' ? 'SAC — parcelas decrescentes' : 'PRICE — parcelas fixas'} />
                 <Row label="Total de juros" value={fmt(financing.totalInterest)} bold />
             </div>
+
+            <FinancingBreakdownSection breakdown={breakdown} />
         </div>
     );
 }
 
-/* ------------------------------------------------------------------ */
-/* Consortium-only view                                                */
-/* ------------------------------------------------------------------ */
-function ConsortiumOnlyView({ consortium, propertyValue }) {
+function ConsortiumDetail({ consortium, propertyValue, breakdown }) {
     return (
         <div className="bg-white rounded-2xl shadow-sm p-5">
             <div className="flex items-center gap-3 mb-4">
@@ -257,25 +491,173 @@ function ConsortiumOnlyView({ consortium, propertyValue }) {
                 </div>
             </div>
 
-            <div className="grid grid-cols-2 gap-4">
-                <div className="bg-gray-50 rounded-xl p-4">
-                    <p className="text-xs text-gray-400 mb-1">Custo total</p>
-                    <p className="text-xl font-bold text-gray-800">{fmt(consortium.totalCost)}</p>
-                </div>
-                <div className="bg-gray-50 rounded-xl p-4">
-                    <p className="text-xs text-gray-400 mb-1">Contribuição mensal</p>
-                    <p className="text-xl font-bold text-gray-800">{fmt(consortium.monthlyContribution)}</p>
-                </div>
+            <div className="flex flex-col gap-2 text-sm mb-4">
+                <Row label="Carta de crédito" value={fmt(propertyValue)} />
+                <Row label="Prazo" value={`${consortium.termMonths} meses (${(consortium.termMonths / 12).toFixed(1).replace('.0', '')} anos)`} />
+                <Row label="Taxa adm. anual" value={`${consortium.annualAdminFee}% a.a.`} />
+                {consortium.reserveFund > 0 && <Row label="Fundo de reserva" value={`${consortium.reserveFund}% a.a.`} />}
+                <Row label="Lance" value={`${consortium.bidPercentage?.toFixed(1)}%`} />
+                <Row label="Total de taxas adm." value={fmt(consortium.totalAdminFee)} bold />
             </div>
 
-            <div className="mt-4 flex flex-col gap-2 text-sm">
-                <Row label="Carta de crédito" value={fmt(propertyValue)} />
-                <Row label="Prazo" value={`${consortium.termMonths} meses`} />
-                <Row label="Taxa adm. anual" value={`${consortium.annualAdminFee}%`} />
-                <Row label="Fundo de reserva" value={`${consortium.reserveFund}%`} />
-                <Row label="Lance" value={`${consortium.bidPercentage}%`} />
-                <Row label="Total taxa adm." value={fmt(consortium.totalAdminFee)} bold />
+            <ConsortiumBreakdownSection breakdown={breakdown} />
+        </div>
+    );
+}
+
+/* ------------------------------------------------------------------ */
+/* 3.2 — Gráficos de comparação                                        */
+/* ------------------------------------------------------------------ */
+
+// Gráfico 1: BarChart empilhado — composição do custo total
+function CostComparisonChart({ financing, consortium }) {
+    const financingFinanced = financing.totalCost - financing.totalInterest;
+    const consortiumPrincipal = consortium.totalCost - consortium.totalAdminFee;
+
+    const data = [
+        {
+            name: 'Financiamento',
+            Principal: Math.round(financingFinanced),
+            'Juros / Taxas': Math.round(financing.totalInterest),
+        },
+        {
+            name: 'Consórcio',
+            Principal: Math.round(consortiumPrincipal),
+            'Juros / Taxas': Math.round(consortium.totalAdminFee),
+        },
+    ];
+
+    return (
+        <div className="bg-white rounded-2xl shadow-sm p-5">
+            <h3 className="font-bold text-gray-800 mb-1">Composição do custo total</h3>
+            <p className="text-xs text-gray-400 mb-4">Quanto é principal e quanto são encargos em cada modalidade.</p>
+            <ResponsiveContainer width="100%" height={200}>
+                <BarChart data={data} margin={{ top: 4, right: 8, left: 8, bottom: 0 }}>
+                    <CartesianGrid strokeDasharray="3 3" stroke="#f0f0f0" vertical={false} />
+                    <XAxis dataKey="name" tick={{ fontSize: 12, fill: '#6b7280' }} axisLine={false} tickLine={false} />
+                    <YAxis
+                        tickFormatter={(v) => `R$${(v / 1000).toFixed(0)}k`}
+                        tick={{ fontSize: 11, fill: '#9ca3af' }}
+                        axisLine={false}
+                        tickLine={false}
+                        width={56}
+                    />
+                    <Tooltip
+                        formatter={(v, name) => [fmt(v), name]}
+                        contentStyle={{ fontSize: 12, borderRadius: 8, border: '1px solid #e5e7eb' }}
+                    />
+                    <Legend wrapperStyle={{ fontSize: 12, paddingTop: 8 }} />
+                    <Bar dataKey="Principal" stackId="a" fill="#7c3aed" radius={[0, 0, 0, 0]}>
+                        <Cell key="f-p" fill="#7c3aed" />
+                        <Cell key="c-p" fill="#059669" />
+                    </Bar>
+                    <Bar dataKey="Juros / Taxas" stackId="a" fill="#f97316" radius={[6, 6, 0, 0]}>
+                        <Cell key="f-j" fill="#f97316" />
+                        <Cell key="c-j" fill="#f59e0b" />
+                    </Bar>
+                </BarChart>
+            </ResponsiveContainer>
+            <div className="flex gap-4 mt-2 justify-center text-xs text-gray-500">
+                <span className="flex items-center gap-1"><span className="w-2.5 h-2.5 rounded-sm bg-violet-700 inline-block" /> Principal (Financ.)</span>
+                <span className="flex items-center gap-1"><span className="w-2.5 h-2.5 rounded-sm bg-emerald-600 inline-block" /> Principal (Cons.)</span>
+                <span className="flex items-center gap-1"><span className="w-2.5 h-2.5 rounded-sm bg-orange-500 inline-block" /> Juros (Financ.)</span>
+                <span className="flex items-center gap-1"><span className="w-2.5 h-2.5 rounded-sm bg-amber-400 inline-block" /> Taxas (Cons.)</span>
             </div>
+        </div>
+    );
+}
+
+// Gráfico 2: LineChart — evolução mensal das parcelas
+function InstallmentEvolutionChart({ financing, consortium }) {
+    // Recalcula SAC mês a mês para a linha de financiamento
+    const financed = financing.totalCost - financing.totalInterest;
+    const n = financing.termMonths;
+    const r = Math.pow(1 + financing.annualInterestRate / 100, 1 / 12) - 1;
+    const sacAmortization = financed / n;
+    const priceInstallment = r > 0
+        ? financed * (r * Math.pow(1 + r, n)) / (Math.pow(1 + r, n) - 1)
+        : financed / n;
+    const consortiumMonthly = consortium.monthlyContribution;
+
+    // Prazo máximo entre as duas modalidades
+    const maxTerm = Math.max(n, consortium.termMonths);
+    const step = Math.max(1, Math.ceil(maxTerm / 60));
+
+    const data = [];
+    let sacBalance = financed;
+
+    for (let m = 1; m <= maxTerm; m += step) {
+        const point = { mes: m };
+
+        if (m <= n) {
+            const sacInterest = sacBalance * r;
+            if (financing.amortizationType === 'SAC') {
+                point['Financiamento (SAC)'] = Math.round(sacAmortization + sacInterest);
+            } else {
+                point['Financiamento (PRICE)'] = Math.round(priceInstallment);
+            }
+            for (let s = 0; s < step && sacBalance > 0; s++) {
+                sacBalance = Math.max(0, sacBalance - sacAmortization);
+            }
+        }
+
+        if (m <= consortium.termMonths) {
+            point['Consórcio'] = Math.round(consortiumMonthly);
+        }
+
+        data.push(point);
+    }
+
+    const financingKey = financing.amortizationType === 'SAC' ? 'Financiamento (SAC)' : 'Financiamento (PRICE)';
+
+    return (
+        <div className="bg-white rounded-2xl shadow-sm p-5">
+            <h3 className="font-bold text-gray-800 mb-1">Evolução das parcelas mensais</h3>
+            <p className="text-xs text-gray-400 mb-4">Comparativo mês a mês entre as contribuições de cada modalidade.</p>
+            <ResponsiveContainer width="100%" height={200}>
+                <LineChart data={data} margin={{ top: 4, right: 8, left: 8, bottom: 0 }}>
+                    <CartesianGrid strokeDasharray="3 3" stroke="#f0f0f0" />
+                    <XAxis
+                        dataKey="mes"
+                        tickFormatter={(v) => `${v}m`}
+                        tick={{ fontSize: 11, fill: '#9ca3af' }}
+                        axisLine={false}
+                        tickLine={false}
+                    />
+                    <YAxis
+                        tickFormatter={(v) => `R$${(v / 1000).toFixed(0)}k`}
+                        tick={{ fontSize: 11, fill: '#9ca3af' }}
+                        axisLine={false}
+                        tickLine={false}
+                        width={52}
+                    />
+                    <Tooltip
+                        formatter={(v, name) => [fmt(v), name]}
+                        labelFormatter={(l) => `Mês ${l}`}
+                        contentStyle={{ fontSize: 12, borderRadius: 8, border: '1px solid #e5e7eb' }}
+                    />
+                    <Legend wrapperStyle={{ fontSize: 12, paddingTop: 8 }} />
+                    <Line
+                        type="monotone"
+                        dataKey={financingKey}
+                        stroke="#7c3aed"
+                        strokeWidth={2}
+                        dot={false}
+                        activeDot={{ r: 4 }}
+                        connectNulls={false}
+                    />
+                    <Line
+                        type="monotone"
+                        dataKey="Consórcio"
+                        stroke="#059669"
+                        strokeWidth={2}
+                        dot={false}
+                        strokeDasharray="5 3"
+                        activeDot={{ r: 4 }}
+                        connectNulls={false}
+                    />
+                </LineChart>
+            </ResponsiveContainer>
         </div>
     );
 }
