@@ -1,8 +1,12 @@
-import { useState } from 'react';
+import { useState, useMemo } from 'react';
 import { useNavigate } from 'react-router-dom';
 import DashboardLayout from '../components/DashboardLayout';
 import { useSimulation } from '../context/SimulationContext';
 import { runSimulation } from '../services/api';
+import {
+    LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip,
+    Legend, ResponsiveContainer,
+} from 'recharts';
 
 // ---- Currency mask helpers ----
 function toRawNumber(masked) {
@@ -40,6 +44,139 @@ function monthlyEquivalent(annualRate) {
     const rate = parseFloat(annualRate);
     if (!rate || rate <= 0) return null;
     return ((Math.pow(1 + rate / 100, 1 / 12) - 1) * 100).toFixed(4);
+}
+
+// Gera dados mensais para SAC e PRICE a partir dos inputs do formulário
+function buildAmortizationData(propertyValue, downPayment, termMonths, annualInterestRate) {
+    const financed = parseFloat(propertyValue) - parseFloat(downPayment || 0);
+    const n = parseInt(termMonths);
+    const r = Math.pow(1 + parseFloat(annualInterestRate) / 100, 1 / 12) - 1;
+    if (!financed || financed <= 0 || !n || n <= 0 || !r || r <= 0) return null;
+
+    const priceInstallment = financed * (r * Math.pow(1 + r, n)) / (Math.pow(1 + r, n) - 1);
+    const sacAmortization = financed / n;
+
+    // Amostragem: máximo 60 pontos para não sobrecarregar o gráfico
+    const step = Math.max(1, Math.ceil(n / 60));
+    const data = [];
+    let sacBalance = financed;
+
+    for (let m = 1; m <= n; m += step) {
+        // SAC: parcela decrescente
+        const sacInterest = sacBalance * r;
+        const sacInstallment = sacAmortization + sacInterest;
+
+        data.push({
+            mes: m,
+            SAC: Math.round(sacInstallment),
+            PRICE: Math.round(priceInstallment),
+        });
+
+        // Avança saldo SAC pelo step
+        for (let s = 0; s < step && sacBalance > 0; s++) {
+            sacBalance = Math.max(0, sacBalance - sacAmortization);
+        }
+    }
+
+    return { data, priceInstallment: Math.round(priceInstallment) };
+}
+
+const fmtCurrency = (v) =>
+    `R$ ${Number(v).toLocaleString('pt-BR', { minimumFractionDigits: 0, maximumFractionDigits: 0 })}`;
+
+function AmortizationChart({ financing }) {
+    const result = useMemo(
+        () => buildAmortizationData(
+            financing.propertyValue,
+            financing.downPayment,
+            financing.termMonths,
+            financing.annualInterestRate,
+        ),
+        [financing.propertyValue, financing.downPayment, financing.termMonths, financing.annualInterestRate],
+    );
+
+    if (!result) {
+        return (
+            <div className="bg-white rounded-2xl shadow-sm p-5">
+                <h3 className="font-bold text-gray-800 mb-1">Comparativo SAC × PRICE</h3>
+                <p className="text-sm text-gray-400">Preencha valor do imóvel, prazo e taxa para visualizar o gráfico.</p>
+            </div>
+        );
+    }
+
+    const { data, priceInstallment } = result;
+    const firstSAC = data[0]?.SAC;
+
+    return (
+        <div className="bg-white rounded-2xl shadow-sm p-5">
+            <div className="flex items-start justify-between mb-1">
+                <h3 className="font-bold text-gray-800">Comparativo SAC × PRICE</h3>
+            </div>
+            <p className="text-xs text-gray-400 mb-4">Evolução das parcelas ao longo do prazo.</p>
+
+            <div className="grid grid-cols-2 gap-3 mb-4">
+                <div className="bg-blue-50 rounded-xl p-3">
+                    <p className="text-xs text-gray-400">SAC — 1ª parcela</p>
+                    <p className="font-bold text-blue-700">{fmtCurrency(firstSAC)}</p>
+                    <p className="text-xs text-gray-400 mt-0.5">Vai até {fmtCurrency(data[data.length - 1]?.SAC)}</p>
+                </div>
+                <div className="bg-violet-50 rounded-xl p-3">
+                    <p className="text-xs text-gray-400">PRICE — parcela fixa</p>
+                    <p className="font-bold text-violet-700">{fmtCurrency(priceInstallment)}</p>
+                    <p className="text-xs text-gray-400 mt-0.5">Constante por {financing.termMonths} meses</p>
+                </div>
+            </div>
+
+            <ResponsiveContainer width="100%" height={200}>
+                <LineChart data={data} margin={{ top: 4, right: 8, left: 8, bottom: 0 }}>
+                    <CartesianGrid strokeDasharray="3 3" stroke="#f0f0f0" />
+                    <XAxis
+                        dataKey="mes"
+                        tickFormatter={(v) => `${v}m`}
+                        tick={{ fontSize: 11, fill: '#9ca3af' }}
+                        axisLine={false}
+                        tickLine={false}
+                    />
+                    <YAxis
+                        tickFormatter={(v) => `R$${(v / 1000).toFixed(0)}k`}
+                        tick={{ fontSize: 11, fill: '#9ca3af' }}
+                        axisLine={false}
+                        tickLine={false}
+                        width={52}
+                    />
+                    <Tooltip
+                        formatter={(v, name) => [fmtCurrency(v), name]}
+                        labelFormatter={(l) => `Mês ${l}`}
+                        contentStyle={{ fontSize: 12, borderRadius: 8, border: '1px solid #e5e7eb' }}
+                    />
+                    <Legend
+                        wrapperStyle={{ fontSize: 12, paddingTop: 8 }}
+                        formatter={(v) => v === 'SAC' ? 'SAC (decrescente)' : 'PRICE (fixo)'}
+                    />
+                    <Line
+                        type="monotone"
+                        dataKey="SAC"
+                        stroke="#3b82f6"
+                        strokeWidth={2}
+                        dot={false}
+                        activeDot={{ r: 4 }}
+                    />
+                    <Line
+                        type="monotone"
+                        dataKey="PRICE"
+                        stroke="#7c3aed"
+                        strokeWidth={2}
+                        dot={false}
+                        strokeDasharray="5 3"
+                        activeDot={{ r: 4 }}
+                    />
+                </LineChart>
+            </ResponsiveContainer>
+            <p className="text-xs text-gray-400 mt-2 text-center">
+                SAC inicia maior, mas o total pago é geralmente menor que no PRICE.
+            </p>
+        </div>
+    );
 }
 
 export default function Financing() {
@@ -258,6 +395,10 @@ export default function Financing() {
                     </div>
 
                 </div>
+
+                {/* Gráfico SAC vs PRICE */}
+                <AmortizationChart financing={financing} />
+
             </div>
         </DashboardLayout>
     );
