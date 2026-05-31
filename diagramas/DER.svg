@@ -1,0 +1,87 @@
+<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="488pt" height="575pt" viewBox="0.00 0.00 488.00 575.00">
+<g id="graph0" class="graph" transform="scale(1 1) rotate(0) translate(4 571)">
+<title>consortium_simulations</title>
+<polygon fill="white" stroke="none" points="-4,4 -4,-571 484.37,-571 484.37,4 -4,4"/>
+<!-- consortium_simulations -->
+<g id="node1" class="node">
+<title>consortium_simulations</title>
+<polygon fill="none" stroke="black" points="0,-374.5 0,-566.5 230.63,-566.5 230.63,-374.5 0,-374.5"/>
+<text xml:space="preserve" text-anchor="middle" x="115.31" y="-549.9" font-family="Times,serif" font-size="14.00">consortium_simulations</text>
+<polyline fill="none" stroke="black" points="0,-541.7 230.63,-541.7"/>
+<text xml:space="preserve" text-anchor="start" x="8" y="-525.1" font-family="Times,serif" font-size="14.00">annual_admin_fee : decimal(8,4)</text>
+<text xml:space="preserve" text-anchor="start" x="8" y="-508.3" font-family="Times,serif" font-size="14.00"> bid_percentage : decimal(8,4)</text>
+<text xml:space="preserve" text-anchor="start" x="8" y="-491.5" font-family="Times,serif" font-size="14.00"> monthly_contribution : decimal(15,2)</text>
+<text xml:space="preserve" text-anchor="start" x="8" y="-474.7" font-family="Times,serif" font-size="14.00"> reserve_fund : decimal(8,4)</text>
+<text xml:space="preserve" text-anchor="start" x="8" y="-457.9" font-family="Times,serif" font-size="14.00"> term_months : int</text>
+<text xml:space="preserve" text-anchor="start" x="8" y="-441.1" font-family="Times,serif" font-size="14.00"> total_admin_fee : decimal(15,2)</text>
+<text xml:space="preserve" text-anchor="start" x="8" y="-424.3" font-family="Times,serif" font-size="14.00"> total_cost : decimal(15,2)</text>
+<text xml:space="preserve" text-anchor="start" x="8" y="-407.5" font-family="Times,serif" font-size="14.00"> simulation_id : bigint</text>
+<polyline fill="none" stroke="black" points="0,-399.3 230.63,-399.3"/>
+<text xml:space="preserve" text-anchor="start" x="8" y="-382.7" font-family="Times,serif" font-size="14.00">id : bigint</text>
+</g>
+<!-- simulations -->
+<g id="node3" class="node">
+<title>simulations</title>
+<polygon fill="none" stroke="black" points="56.38,-179.1 56.38,-320.7 422.25,-320.7 422.25,-179.1 56.38,-179.1"/>
+<text xml:space="preserve" text-anchor="middle" x="239.31" y="-304.1" font-family="Times,serif" font-size="14.00">simulations</text>
+<polyline fill="none" stroke="black" points="56.38,-295.9 422.25,-295.9"/>
+<text xml:space="preserve" text-anchor="start" x="64.38" y="-279.3" font-family="Times,serif" font-size="14.00">created_at : datetime(6)</text>
+<text xml:space="preserve" text-anchor="start" x="64.38" y="-262.5" font-family="Times,serif" font-size="14.00"> down_payment : decimal(15,2)</text>
+<text xml:space="preserve" text-anchor="start" x="64.38" y="-245.7" font-family="Times,serif" font-size="14.00"> property_value : decimal(15,2)</text>
+<text xml:space="preserve" text-anchor="start" x="64.38" y="-228.9" font-family="Times,serif" font-size="14.00"> recommendation : enum('consortium', 'financing', 'undefined')</text>
+<text xml:space="preserve" text-anchor="start" x="64.38" y="-212.1" font-family="Times,serif" font-size="14.00"> user_id : bigint</text>
+<polyline fill="none" stroke="black" points="56.38,-203.9 422.25,-203.9"/>
+<text xml:space="preserve" text-anchor="start" x="64.38" y="-187.3" font-family="Times,serif" font-size="14.00">id : bigint</text>
+</g>
+<!-- consortium_simulations&#45;&gt;simulations -->
+<g id="edge1" class="edge">
+<title>consortium_simulations-&gt;simulations</title>
+<path fill="none" stroke="#595959" d="M143.5,-374.06C143.5,-374.06 143.5,-332.45 143.5,-332.45"/>
+<polygon fill="#595959" stroke="#595959" points="147,-332.45 143.5,-322.45 140,-332.45 147,-332.45"/>
+<text xml:space="preserve" text-anchor="middle" x="161.2" y="-343.4" font-family="Times,serif" font-size="14.00">simulation_id:id</text>
+</g>
+<!-- financing_simulations -->
+<g id="node2" class="node">
+<title>financing_simulations</title>
+<polygon fill="none" stroke="black" points="248.25,-382.9 248.25,-558.1 480.37,-558.1 480.37,-382.9 248.25,-382.9"/>
+<text xml:space="preserve" text-anchor="middle" x="364.31" y="-541.5" font-family="Times,serif" font-size="14.00">financing_simulations</text>
+<polyline fill="none" stroke="black" points="248.25,-533.3 480.37,-533.3"/>
+<text xml:space="preserve" text-anchor="start" x="256.25" y="-516.7" font-family="Times,serif" font-size="14.00">amortization_type : enum('price', 'sac')</text>
+<text xml:space="preserve" text-anchor="start" x="256.25" y="-499.9" font-family="Times,serif" font-size="14.00"> annual_interest_rate : decimal(8,4)</text>
+<text xml:space="preserve" text-anchor="start" x="256.25" y="-483.1" font-family="Times,serif" font-size="14.00"> installment_value : decimal(15,2)</text>
+<text xml:space="preserve" text-anchor="start" x="256.25" y="-466.3" font-family="Times,serif" font-size="14.00"> term_months : int</text>
+<text xml:space="preserve" text-anchor="start" x="256.25" y="-449.5" font-family="Times,serif" font-size="14.00"> total_cost : decimal(15,2)</text>
+<text xml:space="preserve" text-anchor="start" x="256.25" y="-432.7" font-family="Times,serif" font-size="14.00"> total_interest : decimal(15,2)</text>
+<text xml:space="preserve" text-anchor="start" x="256.25" y="-415.9" font-family="Times,serif" font-size="14.00"> simulation_id : bigint</text>
+<polyline fill="none" stroke="black" points="248.25,-407.7 480.37,-407.7"/>
+<text xml:space="preserve" text-anchor="start" x="256.25" y="-391.1" font-family="Times,serif" font-size="14.00">id : bigint</text>
+</g>
+<!-- financing_simulations&#45;&gt;simulations -->
+<g id="edge2" class="edge">
+<title>financing_simulations-&gt;simulations</title>
+<path fill="none" stroke="#595959" d="M335.25,-382.68C335.25,-382.68 335.25,-332.66 335.25,-332.66"/>
+<polygon fill="#595959" stroke="#595959" points="338.75,-332.66 335.25,-322.66 331.75,-332.66 338.75,-332.66"/>
+<text xml:space="preserve" text-anchor="middle" x="410.2" y="-343.4" font-family="Times,serif" font-size="14.00">simulation_id:id</text>
+</g>
+<!-- users -->
+<g id="node4" class="node">
+<title>users</title>
+<polygon fill="none" stroke="black" points="157.63,-0.5 157.63,-125.3 321,-125.3 321,-0.5 157.63,-0.5"/>
+<text xml:space="preserve" text-anchor="middle" x="239.31" y="-108.7" font-family="Times,serif" font-size="14.00">users</text>
+<polyline fill="none" stroke="black" points="157.63,-100.5 321,-100.5"/>
+<text xml:space="preserve" text-anchor="start" x="165.63" y="-83.9" font-family="Times,serif" font-size="14.00">down_payment : double</text>
+<text xml:space="preserve" text-anchor="start" x="165.63" y="-67.1" font-family="Times,serif" font-size="14.00"> email : varchar(255)</text>
+<text xml:space="preserve" text-anchor="start" x="165.63" y="-50.3" font-family="Times,serif" font-size="14.00"> monthly_income : double</text>
+<text xml:space="preserve" text-anchor="start" x="165.63" y="-33.5" font-family="Times,serif" font-size="14.00"> name : varchar(100)</text>
+<polyline fill="none" stroke="black" points="157.63,-25.3 321,-25.3"/>
+<text xml:space="preserve" text-anchor="start" x="165.63" y="-8.7" font-family="Times,serif" font-size="14.00">id : bigint</text>
+</g>
+<!-- simulations&#45;&gt;users -->
+<g id="edge3" class="edge">
+<title>simulations-&gt;users</title>
+<path fill="none" stroke="#595959" d="M239.31,-178.67C239.31,-178.67 239.31,-137.18 239.31,-137.18"/>
+<polygon fill="#595959" stroke="#595959" points="242.81,-137.18 239.31,-127.18 235.81,-137.18 242.81,-137.18"/>
+<text xml:space="preserve" text-anchor="middle" x="267.31" y="-148" font-family="Times,serif" font-size="14.00">user_id:id</text>
+</g>
+</g>
+</svg>

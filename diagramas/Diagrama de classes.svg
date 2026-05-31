@@ -1,0 +1,506 @@
+<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="3145pt" height="1326pt" viewBox="0.00 0.00 3145.00 1326.00">
+<g id="graph0" class="graph" transform="scale(1 1) rotate(0) translate(4 1322.4)">
+<title>java</title>
+<polygon fill="white" stroke="none" points="-4,4 -4,-1322.4 3141.19,-1322.4 3141.19,4 -4,4"/>
+<!-- AmortizationType -->
+<g id="node1" class="node">
+<title>AmortizationType</title>
+<polygon fill="none" stroke="black" points="334.46,-507.1 334.46,-590.3 568.3,-590.3 568.3,-507.1 334.46,-507.1"/>
+<text xml:space="preserve" text-anchor="middle" x="451.38" y="-573.7" font-family="Times,serif" font-size="14.00">&lt;&lt;enumeration&gt;&gt;</text>
+<text xml:space="preserve" text-anchor="middle" x="451.38" y="-556.9" font-family="Times,serif" font-size="14.00">AmortizationType</text>
+<polyline fill="none" stroke="black" points="334.46,-548.7 568.3,-548.7"/>
+<text xml:space="preserve" text-anchor="start" x="342.46" y="-532.1" font-family="Times,serif" font-size="14.00">+ values() : AmortizationType[]</text>
+<text xml:space="preserve" text-anchor="start" x="342.46" y="-515.3" font-family="Times,serif" font-size="14.00"> + valueOf(String) : AmortizationType</text>
+</g>
+<!-- CasacertaApiApplication -->
+<g id="node2" class="node">
+<title>CasacertaApiApplication</title>
+<polygon fill="none" stroke="black" points="774.62,-1184.3 774.62,-1233.9 932.13,-1233.9 932.13,-1184.3 774.62,-1184.3"/>
+<text xml:space="preserve" text-anchor="middle" x="853.38" y="-1217.3" font-family="Times,serif" font-size="14.00">CasacertaApiApplication</text>
+<polyline fill="none" stroke="black" points="774.62,-1209.1 932.13,-1209.1"/>
+<text xml:space="preserve" text-anchor="start" x="782.62" y="-1192.5" font-family="Times,serif" font-size="14.00">+ main(String[]) : void</text>
+</g>
+<!-- ConsortiumRequestDTO -->
+<g id="node3" class="node">
+<title>ConsortiumRequestDTO</title>
+<polygon fill="none" stroke="black" points="0,-812.1 0,-996.1 272.75,-996.1 272.75,-812.1 0,-812.1"/>
+<text xml:space="preserve" text-anchor="middle" x="136.38" y="-979.5" font-family="Times,serif" font-size="14.00">ConsortiumRequestDTO</text>
+<polyline fill="none" stroke="black" points="0,-971.3 272.75,-971.3"/>
+<text xml:space="preserve" text-anchor="start" x="8" y="-954.7" font-family="Times,serif" font-size="14.00">+ getReserveFund() : BigDecimal</text>
+<text xml:space="preserve" text-anchor="start" x="8" y="-937.9" font-family="Times,serif" font-size="14.00"> + getTermMonths() : Integer</text>
+<text xml:space="preserve" text-anchor="start" x="8" y="-921.1" font-family="Times,serif" font-size="14.00"> + getAnnualAdminFee() : BigDecimal</text>
+<text xml:space="preserve" text-anchor="start" x="8" y="-904.3" font-family="Times,serif" font-size="14.00"> + getBidPercentage() : BigDecimal</text>
+<text xml:space="preserve" text-anchor="start" x="8" y="-887.5" font-family="Times,serif" font-size="14.00"> + setTermMonths(Integer) : void</text>
+<text xml:space="preserve" text-anchor="start" x="8" y="-870.7" font-family="Times,serif" font-size="14.00"> + setAnnualAdminFee(BigDecimal) : void</text>
+<text xml:space="preserve" text-anchor="start" x="8" y="-853.9" font-family="Times,serif" font-size="14.00"> + setReserveFund(BigDecimal) : void</text>
+<text xml:space="preserve" text-anchor="start" x="8" y="-837.1" font-family="Times,serif" font-size="14.00"> + setBidPercentage(BigDecimal) : void</text>
+<text xml:space="preserve" text-anchor="start" x="8" y="-820.3" font-family="Times,serif" font-size="14.00"> + builder() : ConsortiumRequestDTOBuilder</text>
+</g>
+<!-- ConsortiumService -->
+<g id="node4" class="node">
+<title>ConsortiumService</title>
+<polygon fill="none" stroke="black" points="1630.7,-523.9 1630.7,-573.5 2064.05,-573.5 2064.05,-523.9 1630.7,-523.9"/>
+<text xml:space="preserve" text-anchor="middle" x="1847.38" y="-556.9" font-family="Times,serif" font-size="14.00">ConsortiumService</text>
+<polyline fill="none" stroke="black" points="1630.7,-548.7 2064.05,-548.7"/>
+<text xml:space="preserve" text-anchor="start" x="1638.7" y="-532.1" font-family="Times,serif" font-size="14.00">+ calculate(Simulation, ConsortiumRequestDTO) : ConsortiumSimulation</text>
+</g>
+<!-- ConsortiumSimulation -->
+<g id="node5" class="node">
+<title>ConsortiumSimulation</title>
+<polygon fill="none" stroke="black" points="520.88,-0.5 520.88,-352.5 799.87,-352.5 799.87,-0.5 520.88,-0.5"/>
+<text xml:space="preserve" text-anchor="middle" x="660.38" y="-335.9" font-family="Times,serif" font-size="14.00">ConsortiumSimulation</text>
+<polyline fill="none" stroke="black" points="520.88,-327.7 799.87,-327.7"/>
+<text xml:space="preserve" text-anchor="start" x="528.88" y="-311.1" font-family="Times,serif" font-size="14.00">+ setAnnualAdminFee(BigDecimal) : void</text>
+<text xml:space="preserve" text-anchor="start" x="528.88" y="-294.3" font-family="Times,serif" font-size="14.00"> + setTotalAdminFee(BigDecimal) : void</text>
+<text xml:space="preserve" text-anchor="start" x="528.88" y="-277.5" font-family="Times,serif" font-size="14.00"> + getId() : Long</text>
+<text xml:space="preserve" text-anchor="start" x="528.88" y="-260.7" font-family="Times,serif" font-size="14.00"> + getSimulation() : Simulation</text>
+<text xml:space="preserve" text-anchor="start" x="528.88" y="-243.9" font-family="Times,serif" font-size="14.00"> + getTotalAdminFee() : BigDecimal</text>
+<text xml:space="preserve" text-anchor="start" x="528.88" y="-227.1" font-family="Times,serif" font-size="14.00"> + setSimulation(Simulation) : void</text>
+<text xml:space="preserve" text-anchor="start" x="528.88" y="-210.3" font-family="Times,serif" font-size="14.00"> + setTotalCost(BigDecimal) : void</text>
+<text xml:space="preserve" text-anchor="start" x="528.88" y="-193.5" font-family="Times,serif" font-size="14.00"> + setBidPercentage(BigDecimal) : void</text>
+<text xml:space="preserve" text-anchor="start" x="528.88" y="-176.7" font-family="Times,serif" font-size="14.00"> + setMonthlyContribution(BigDecimal) : void</text>
+<text xml:space="preserve" text-anchor="start" x="528.88" y="-159.9" font-family="Times,serif" font-size="14.00"> + getTermMonths() : Integer</text>
+<text xml:space="preserve" text-anchor="start" x="528.88" y="-143.1" font-family="Times,serif" font-size="14.00"> + getAnnualAdminFee() : BigDecimal</text>
+<text xml:space="preserve" text-anchor="start" x="528.88" y="-126.3" font-family="Times,serif" font-size="14.00"> + getReserveFund() : BigDecimal</text>
+<text xml:space="preserve" text-anchor="start" x="528.88" y="-109.5" font-family="Times,serif" font-size="14.00"> + getBidPercentage() : BigDecimal</text>
+<text xml:space="preserve" text-anchor="start" x="528.88" y="-92.7" font-family="Times,serif" font-size="14.00"> + setReserveFund(BigDecimal) : void</text>
+<text xml:space="preserve" text-anchor="start" x="528.88" y="-75.9" font-family="Times,serif" font-size="14.00"> + builder() : ConsortiumSimulationBuilder</text>
+<text xml:space="preserve" text-anchor="start" x="528.88" y="-59.1" font-family="Times,serif" font-size="14.00"> + setId(Long) : void</text>
+<text xml:space="preserve" text-anchor="start" x="528.88" y="-42.3" font-family="Times,serif" font-size="14.00"> + setTermMonths(Integer) : void</text>
+<text xml:space="preserve" text-anchor="start" x="528.88" y="-25.5" font-family="Times,serif" font-size="14.00"> + getMonthlyContribution() : BigDecimal</text>
+<text xml:space="preserve" text-anchor="start" x="528.88" y="-8.7" font-family="Times,serif" font-size="14.00"> + getTotalCost() : BigDecimal</text>
+</g>
+<!-- Simulation -->
+<g id="node11" class="node">
+<title>Simulation</title>
+<polygon fill="none" stroke="black" points="597.47,-389.5 597.47,-707.9 915.29,-707.9 915.29,-389.5 597.47,-389.5"/>
+<text xml:space="preserve" text-anchor="middle" x="756.38" y="-691.3" font-family="Times,serif" font-size="14.00">Simulation</text>
+<polyline fill="none" stroke="black" points="597.47,-683.1 915.29,-683.1"/>
+<text xml:space="preserve" text-anchor="start" x="605.47" y="-666.5" font-family="Times,serif" font-size="14.00">+ setId(Long) : void</text>
+<text xml:space="preserve" text-anchor="start" x="605.47" y="-649.7" font-family="Times,serif" font-size="14.00"> + setRecommendation(RecommendationType) : void</text>
+<text xml:space="preserve" text-anchor="start" x="605.47" y="-632.9" font-family="Times,serif" font-size="14.00"> + getId() : Long</text>
+<text xml:space="preserve" text-anchor="start" x="605.47" y="-616.1" font-family="Times,serif" font-size="14.00"> + getUser() : User</text>
+<text xml:space="preserve" text-anchor="start" x="605.47" y="-599.3" font-family="Times,serif" font-size="14.00"> + getPropertyValue() : BigDecimal</text>
+<text xml:space="preserve" text-anchor="start" x="605.47" y="-582.5" font-family="Times,serif" font-size="14.00"> + getDownPayment() : BigDecimal</text>
+<text xml:space="preserve" text-anchor="start" x="605.47" y="-565.7" font-family="Times,serif" font-size="14.00"> + setPropertyValue(BigDecimal) : void</text>
+<text xml:space="preserve" text-anchor="start" x="605.47" y="-548.9" font-family="Times,serif" font-size="14.00"> + getRecommendation() : RecommendationType</text>
+<text xml:space="preserve" text-anchor="start" x="605.47" y="-532.1" font-family="Times,serif" font-size="14.00"> + getCreatedAt() : LocalDateTime</text>
+<text xml:space="preserve" text-anchor="start" x="605.47" y="-515.3" font-family="Times,serif" font-size="14.00"> + setUser(User) : void</text>
+<text xml:space="preserve" text-anchor="start" x="605.47" y="-498.5" font-family="Times,serif" font-size="14.00"> + setConsortium(ConsortiumSimulation) : void</text>
+<text xml:space="preserve" text-anchor="start" x="605.47" y="-481.7" font-family="Times,serif" font-size="14.00"> + setCreatedAt(LocalDateTime) : void</text>
+<text xml:space="preserve" text-anchor="start" x="605.47" y="-464.9" font-family="Times,serif" font-size="14.00"> + getFinancing() : FinancingSimulation</text>
+<text xml:space="preserve" text-anchor="start" x="605.47" y="-448.1" font-family="Times,serif" font-size="14.00"> + setDownPayment(BigDecimal) : void</text>
+<text xml:space="preserve" text-anchor="start" x="605.47" y="-431.3" font-family="Times,serif" font-size="14.00"> + setFinancing(FinancingSimulation) : void</text>
+<text xml:space="preserve" text-anchor="start" x="605.47" y="-414.5" font-family="Times,serif" font-size="14.00"> + getConsortium() : ConsortiumSimulation</text>
+<text xml:space="preserve" text-anchor="start" x="605.47" y="-397.7" font-family="Times,serif" font-size="14.00"> + builder() : SimulationBuilder</text>
+</g>
+<!-- ConsortiumSimulation&#45;&gt;Simulation -->
+<g id="edge1" class="edge">
+<title>ConsortiumSimulation-&gt;Simulation</title>
+<path fill="none" stroke="#595959" d="M664.93,-365.84C664.93,-365.84 664.93,-377.89 664.93,-377.89"/>
+<polygon fill="#595959" stroke="#595959" points="664.93,-365.69 660.93,-359.69 664.93,-353.69 668.93,-359.69 664.93,-365.69"/>
+<polygon fill="#595959" stroke="#595959" points="664.93,-387.89 660.43,-377.89 664.93,-384.11 664.93,-377.89 664.93,-377.89 664.93,-377.89 664.93,-384.11 669.43,-377.89 664.93,-387.89"/>
+<text xml:space="preserve" text-anchor="middle" x="694.49" y="-376.51" font-family="Times,serif" font-size="14.00">simulation</text>
+<text xml:space="preserve" text-anchor="middle" x="694.49" y="-359.71" font-family="Times,serif" font-size="14.00">1</text>
+<text xml:space="preserve" text-anchor="middle" x="661.43" y="-356.99" font-family="Times,serif" font-size="14.00">1</text>
+</g>
+<!-- CorsConfig -->
+<g id="node6" class="node">
+<title>CorsConfig</title>
+<polygon fill="none" stroke="black" points="2391.44,-1184.3 2391.44,-1233.9 2637.31,-1233.9 2637.31,-1184.3 2391.44,-1184.3"/>
+<text xml:space="preserve" text-anchor="middle" x="2514.38" y="-1217.3" font-family="Times,serif" font-size="14.00">CorsConfig</text>
+<polyline fill="none" stroke="black" points="2391.44,-1209.1 2637.31,-1209.1"/>
+<text xml:space="preserve" text-anchor="start" x="2399.44" y="-1192.5" font-family="Times,serif" font-size="14.00">+ corsConfigurer() : WebMvcConfigurer</text>
+</g>
+<!-- FinancingRequestDTO -->
+<g id="node7" class="node">
+<title>FinancingRequestDTO</title>
+<polygon fill="none" stroke="black" points="291.19,-828.9 291.19,-979.3 589.56,-979.3 589.56,-828.9 291.19,-828.9"/>
+<text xml:space="preserve" text-anchor="middle" x="440.38" y="-962.7" font-family="Times,serif" font-size="14.00">FinancingRequestDTO</text>
+<polyline fill="none" stroke="black" points="291.19,-954.5 589.56,-954.5"/>
+<text xml:space="preserve" text-anchor="start" x="299.19" y="-937.9" font-family="Times,serif" font-size="14.00">+ getTermMonths() : Integer</text>
+<text xml:space="preserve" text-anchor="start" x="299.19" y="-921.1" font-family="Times,serif" font-size="14.00"> + getAnnualInterestRate() : BigDecimal</text>
+<text xml:space="preserve" text-anchor="start" x="299.19" y="-904.3" font-family="Times,serif" font-size="14.00"> + getAmortizationType() : AmortizationType</text>
+<text xml:space="preserve" text-anchor="start" x="299.19" y="-887.5" font-family="Times,serif" font-size="14.00"> + setTermMonths(Integer) : void</text>
+<text xml:space="preserve" text-anchor="start" x="299.19" y="-870.7" font-family="Times,serif" font-size="14.00"> + setAnnualInterestRate(BigDecimal) : void</text>
+<text xml:space="preserve" text-anchor="start" x="299.19" y="-853.9" font-family="Times,serif" font-size="14.00"> + setAmortizationType(AmortizationType) : void</text>
+<text xml:space="preserve" text-anchor="start" x="299.19" y="-837.1" font-family="Times,serif" font-size="14.00"> + builder() : FinancingRequestDTOBuilder</text>
+</g>
+<!-- FinancingRequestDTO&#45;&gt;AmortizationType -->
+<g id="edge2" class="edge">
+<title>FinancingRequestDTO-&gt;AmortizationType</title>
+<path fill="none" stroke="#595959" d="M412.4,-815.68C412.4,-815.68 412.4,-601.86 412.4,-601.86"/>
+<polygon fill="#595959" stroke="#595959" points="412.4,-815.83 416.4,-821.83 412.4,-827.83 408.4,-821.83 412.4,-815.83"/>
+<polygon fill="#595959" stroke="#595959" points="412.4,-591.86 416.9,-601.86 412.4,-595.65 412.4,-601.86 412.4,-601.86 412.4,-601.86 412.4,-595.65 407.9,-601.86 412.4,-591.86"/>
+<text xml:space="preserve" text-anchor="middle" x="362.64" y="-611.65" font-family="Times,serif" font-size="14.00">amortizationType</text>
+<text xml:space="preserve" text-anchor="middle" x="362.64" y="-594.85" font-family="Times,serif" font-size="14.00">1</text>
+<text xml:space="preserve" text-anchor="middle" x="408.9" y="-816.13" font-family="Times,serif" font-size="14.00">1</text>
+</g>
+<!-- FinancingService -->
+<g id="node8" class="node">
+<title>FinancingService</title>
+<polygon fill="none" stroke="black" points="2081.76,-490.3 2081.76,-607.1 2526.99,-607.1 2526.99,-490.3 2081.76,-490.3"/>
+<text xml:space="preserve" text-anchor="middle" x="2304.38" y="-590.5" font-family="Times,serif" font-size="14.00">FinancingService</text>
+<polyline fill="none" stroke="black" points="2081.76,-582.3 2526.99,-582.3"/>
+<text xml:space="preserve" text-anchor="start" x="2089.76" y="-565.7" font-family="Times,serif" font-size="14.00">- toMonthlyRate(BigDecimal) : BigDecimal</text>
+<text xml:space="preserve" text-anchor="start" x="2089.76" y="-548.9" font-family="Times,serif" font-size="14.00"> - calculatePriceInstallment(BigDecimal, BigDecimal, int) : BigDecimal</text>
+<text xml:space="preserve" text-anchor="start" x="2089.76" y="-532.1" font-family="Times,serif" font-size="14.00"> + calculate(Simulation, FinancingRequestDTO) : FinancingSimulation</text>
+<text xml:space="preserve" text-anchor="start" x="2089.76" y="-515.3" font-family="Times,serif" font-size="14.00"> - calculateSACTotalCost(BigDecimal, BigDecimal, int) : BigDecimal</text>
+<text xml:space="preserve" text-anchor="start" x="2089.76" y="-498.5" font-family="Times,serif" font-size="14.00"> - calculateSACFirstInstallment(BigDecimal, BigDecimal, int) : BigDecimal</text>
+</g>
+<!-- FinancingSimulation -->
+<g id="node9" class="node">
+<title>FinancingSimulation</title>
+<polygon fill="none" stroke="black" points="607.19,-744.9 607.19,-1063.3 905.56,-1063.3 905.56,-744.9 607.19,-744.9"/>
+<text xml:space="preserve" text-anchor="middle" x="756.38" y="-1046.7" font-family="Times,serif" font-size="14.00">FinancingSimulation</text>
+<polyline fill="none" stroke="black" points="607.19,-1038.5 905.56,-1038.5"/>
+<text xml:space="preserve" text-anchor="start" x="615.19" y="-1021.9" font-family="Times,serif" font-size="14.00">+ getAnnualInterestRate() : BigDecimal</text>
+<text xml:space="preserve" text-anchor="start" x="615.19" y="-1005.1" font-family="Times,serif" font-size="14.00"> + setAnnualInterestRate(BigDecimal) : void</text>
+<text xml:space="preserve" text-anchor="start" x="615.19" y="-988.3" font-family="Times,serif" font-size="14.00"> + setId(Long) : void</text>
+<text xml:space="preserve" text-anchor="start" x="615.19" y="-971.5" font-family="Times,serif" font-size="14.00"> + setSimulation(Simulation) : void</text>
+<text xml:space="preserve" text-anchor="start" x="615.19" y="-954.7" font-family="Times,serif" font-size="14.00"> + getId() : Long</text>
+<text xml:space="preserve" text-anchor="start" x="615.19" y="-937.9" font-family="Times,serif" font-size="14.00"> + getSimulation() : Simulation</text>
+<text xml:space="preserve" text-anchor="start" x="615.19" y="-921.1" font-family="Times,serif" font-size="14.00"> + getTermMonths() : Integer</text>
+<text xml:space="preserve" text-anchor="start" x="615.19" y="-904.3" font-family="Times,serif" font-size="14.00"> + setTotalInterest(BigDecimal) : void</text>
+<text xml:space="preserve" text-anchor="start" x="615.19" y="-887.5" font-family="Times,serif" font-size="14.00"> + getAmortizationType() : AmortizationType</text>
+<text xml:space="preserve" text-anchor="start" x="615.19" y="-870.7" font-family="Times,serif" font-size="14.00"> + getInstallmentValue() : BigDecimal</text>
+<text xml:space="preserve" text-anchor="start" x="615.19" y="-853.9" font-family="Times,serif" font-size="14.00"> + getTotalCost() : BigDecimal</text>
+<text xml:space="preserve" text-anchor="start" x="615.19" y="-837.1" font-family="Times,serif" font-size="14.00"> + setTermMonths(Integer) : void</text>
+<text xml:space="preserve" text-anchor="start" x="615.19" y="-820.3" font-family="Times,serif" font-size="14.00"> + setTotalCost(BigDecimal) : void</text>
+<text xml:space="preserve" text-anchor="start" x="615.19" y="-803.5" font-family="Times,serif" font-size="14.00"> + builder() : FinancingSimulationBuilder</text>
+<text xml:space="preserve" text-anchor="start" x="615.19" y="-786.7" font-family="Times,serif" font-size="14.00"> + setInstallmentValue(BigDecimal) : void</text>
+<text xml:space="preserve" text-anchor="start" x="615.19" y="-769.9" font-family="Times,serif" font-size="14.00"> + getTotalInterest() : BigDecimal</text>
+<text xml:space="preserve" text-anchor="start" x="615.19" y="-753.1" font-family="Times,serif" font-size="14.00"> + setAmortizationType(AmortizationType) : void</text>
+</g>
+<!-- FinancingSimulation&#45;&gt;AmortizationType -->
+<g id="edge3" class="edge">
+<title>FinancingSimulation-&gt;AmortizationType</title>
+<path fill="none" stroke="#595959" d="M593.98,-778C593.98,-778 490.35,-778 490.35,-778 490.35,-778 490.35,-601.98 490.35,-601.98"/>
+<polygon fill="#595959" stroke="#595959" points="594.13,-778 600.13,-774 606.13,-778 600.13,-782 594.13,-778"/>
+<polygon fill="#595959" stroke="#595959" points="490.35,-591.98 494.85,-601.98 490.35,-595.76 490.35,-601.98 490.35,-601.98 490.35,-601.98 490.35,-595.76 485.85,-601.98 490.35,-591.98"/>
+<text xml:space="preserve" text-anchor="middle" x="540.11" y="-611.76" font-family="Times,serif" font-size="14.00">amortizationType</text>
+<text xml:space="preserve" text-anchor="middle" x="540.11" y="-594.96" font-family="Times,serif" font-size="14.00">1</text>
+<text xml:space="preserve" text-anchor="middle" x="603.53" y="-782.2" font-family="Times,serif" font-size="14.00">1</text>
+</g>
+<!-- FinancingSimulation&#45;&gt;Simulation -->
+<g id="edge4" class="edge">
+<title>FinancingSimulation-&gt;Simulation</title>
+<path fill="none" stroke="#595959" d="M706.65,-731.54C706.65,-731.54 706.65,-719.44 706.65,-719.44"/>
+<polygon fill="#595959" stroke="#595959" points="706.65,-731.69 710.65,-737.69 706.65,-743.69 702.65,-737.69 706.65,-731.69"/>
+<polygon fill="#595959" stroke="#595959" points="706.65,-709.44 711.15,-719.44 706.65,-713.22 706.65,-719.44 706.65,-719.44 706.65,-719.44 706.65,-713.22 702.15,-719.44 706.65,-709.44"/>
+<text xml:space="preserve" text-anchor="middle" x="736.2" y="-729.22" font-family="Times,serif" font-size="14.00">simulation</text>
+<text xml:space="preserve" text-anchor="middle" x="736.2" y="-712.42" font-family="Times,serif" font-size="14.00">1</text>
+<text xml:space="preserve" text-anchor="middle" x="703.15" y="-731.99" font-family="Times,serif" font-size="14.00">1</text>
+</g>
+<!-- RecommendationType -->
+<g id="node10" class="node">
+<title>RecommendationType</title>
+<polygon fill="none" stroke="black" points="1058.4,-134.9 1058.4,-218.1 1316.35,-218.1 1316.35,-134.9 1058.4,-134.9"/>
+<text xml:space="preserve" text-anchor="middle" x="1187.38" y="-201.5" font-family="Times,serif" font-size="14.00">&lt;&lt;enumeration&gt;&gt;</text>
+<text xml:space="preserve" text-anchor="middle" x="1187.38" y="-184.7" font-family="Times,serif" font-size="14.00">RecommendationType</text>
+<polyline fill="none" stroke="black" points="1058.4,-176.5 1316.35,-176.5"/>
+<text xml:space="preserve" text-anchor="start" x="1066.4" y="-159.9" font-family="Times,serif" font-size="14.00">+ values() : RecommendationType[]</text>
+<text xml:space="preserve" text-anchor="start" x="1066.4" y="-143.1" font-family="Times,serif" font-size="14.00"> + valueOf(String) : RecommendationType</text>
+</g>
+<!-- Simulation&#45;&gt;ConsortiumSimulation -->
+<g id="edge5" class="edge">
+<title>Simulation-&gt;ConsortiumSimulation</title>
+<path fill="none" stroke="#595959" d="M732.4,-376.18C732.4,-376.18 732.4,-364.1 732.4,-364.1"/>
+<polygon fill="#595959" stroke="#595959" points="732.4,-376.33 736.4,-382.33 732.4,-388.33 728.4,-382.33 732.4,-376.33"/>
+<polygon fill="#595959" stroke="#595959" points="732.4,-354.1 736.9,-364.1 732.4,-357.88 732.4,-364.1 732.4,-364.1 732.4,-364.1 732.4,-357.88 727.9,-364.1 732.4,-354.1"/>
+<text xml:space="preserve" text-anchor="middle" x="763.9" y="-373.88" font-family="Times,serif" font-size="14.00">consortium</text>
+<text xml:space="preserve" text-anchor="middle" x="763.9" y="-357.08" font-family="Times,serif" font-size="14.00">1</text>
+<text xml:space="preserve" text-anchor="middle" x="728.9" y="-376.63" font-family="Times,serif" font-size="14.00">1</text>
+</g>
+<!-- Simulation&#45;&gt;FinancingSimulation -->
+<g id="edge6" class="edge">
+<title>Simulation-&gt;FinancingSimulation</title>
+<path fill="none" stroke="#595959" d="M806.11,-721.26C806.11,-721.26 806.11,-733.36 806.11,-733.36"/>
+<polygon fill="#595959" stroke="#595959" points="806.11,-721.11 802.11,-715.11 806.11,-709.11 810.11,-715.11 806.11,-721.11"/>
+<polygon fill="#595959" stroke="#595959" points="806.11,-743.36 801.61,-733.36 806.11,-739.58 806.11,-733.36 806.11,-733.36 806.11,-733.36 806.11,-739.58 810.61,-733.36 806.11,-743.36"/>
+<text xml:space="preserve" text-anchor="middle" x="832.54" y="-731.98" font-family="Times,serif" font-size="14.00">financing</text>
+<text xml:space="preserve" text-anchor="middle" x="832.54" y="-715.18" font-family="Times,serif" font-size="14.00">1</text>
+<text xml:space="preserve" text-anchor="middle" x="802.61" y="-712.41" font-family="Times,serif" font-size="14.00">1</text>
+</g>
+<!-- Simulation&#45;&gt;RecommendationType -->
+<g id="edge7" class="edge">
+<title>Simulation-&gt;RecommendationType</title>
+<path fill="none" stroke="#595959" d="M928.65,-397C928.65,-397 1144.38,-397 1144.38,-397 1144.38,-397 1144.38,-229.71 1144.38,-229.71"/>
+<polygon fill="#595959" stroke="#595959" points="928.49,-397 922.49,-401 916.49,-397 922.49,-393 928.49,-397"/>
+<polygon fill="#595959" stroke="#595959" points="1144.38,-219.71 1148.88,-229.71 1144.38,-223.49 1144.38,-229.71 1144.38,-229.71 1144.38,-229.71 1144.38,-223.49 1139.88,-229.71 1144.38,-219.71"/>
+<text xml:space="preserve" text-anchor="middle" x="1097.35" y="-239.49" font-family="Times,serif" font-size="14.00">recommendation</text>
+<text xml:space="preserve" text-anchor="middle" x="1097.35" y="-222.69" font-family="Times,serif" font-size="14.00">1</text>
+<text xml:space="preserve" text-anchor="middle" x="919.09" y="-401.2" font-family="Times,serif" font-size="14.00">1</text>
+</g>
+<!-- User -->
+<g id="node17" class="node">
+<title>User</title>
+<polygon fill="none" stroke="black" points="817.89,-67.7 817.89,-285.3 1040.86,-285.3 1040.86,-67.7 817.89,-67.7"/>
+<text xml:space="preserve" text-anchor="middle" x="929.38" y="-268.7" font-family="Times,serif" font-size="14.00">User</text>
+<polyline fill="none" stroke="black" points="817.89,-260.5 1040.86,-260.5"/>
+<text xml:space="preserve" text-anchor="start" x="825.89" y="-243.9" font-family="Times,serif" font-size="14.00">+ getId() : Long</text>
+<text xml:space="preserve" text-anchor="start" x="825.89" y="-227.1" font-family="Times,serif" font-size="14.00"> + getName() : String</text>
+<text xml:space="preserve" text-anchor="start" x="825.89" y="-210.3" font-family="Times,serif" font-size="14.00"> + getEmail() : String</text>
+<text xml:space="preserve" text-anchor="start" x="825.89" y="-193.5" font-family="Times,serif" font-size="14.00"> + builder() : UserBuilder</text>
+<text xml:space="preserve" text-anchor="start" x="825.89" y="-176.7" font-family="Times,serif" font-size="14.00"> + getMonthlyIncome() : Double</text>
+<text xml:space="preserve" text-anchor="start" x="825.89" y="-159.9" font-family="Times,serif" font-size="14.00"> + getDownPayment() : Double</text>
+<text xml:space="preserve" text-anchor="start" x="825.89" y="-143.1" font-family="Times,serif" font-size="14.00"> + setDownPayment(Double) : void</text>
+<text xml:space="preserve" text-anchor="start" x="825.89" y="-126.3" font-family="Times,serif" font-size="14.00"> + setId(Long) : void</text>
+<text xml:space="preserve" text-anchor="start" x="825.89" y="-109.5" font-family="Times,serif" font-size="14.00"> + setName(String) : void</text>
+<text xml:space="preserve" text-anchor="start" x="825.89" y="-92.7" font-family="Times,serif" font-size="14.00"> + setEmail(String) : void</text>
+<text xml:space="preserve" text-anchor="start" x="825.89" y="-75.9" font-family="Times,serif" font-size="14.00"> + setMonthlyIncome(Double) : void</text>
+</g>
+<!-- Simulation&#45;&gt;User -->
+<g id="edge8" class="edge">
+<title>Simulation-&gt;User</title>
+<path fill="none" stroke="#595959" d="M866.59,-376.18C866.59,-376.18 866.59,-296.91 866.59,-296.91"/>
+<polygon fill="#595959" stroke="#595959" points="866.59,-376.33 870.59,-382.33 866.59,-388.33 862.59,-382.33 866.59,-376.33"/>
+<polygon fill="#595959" stroke="#595959" points="866.59,-286.91 871.09,-296.91 866.59,-290.69 866.59,-296.91 866.59,-296.91 866.59,-296.91 866.59,-290.69 862.09,-296.91 866.59,-286.91"/>
+<text xml:space="preserve" text-anchor="middle" x="854.93" y="-306.69" font-family="Times,serif" font-size="14.00">user</text>
+<text xml:space="preserve" text-anchor="middle" x="854.93" y="-289.89" font-family="Times,serif" font-size="14.00">1</text>
+<text xml:space="preserve" text-anchor="middle" x="863.09" y="-376.63" font-family="Times,serif" font-size="14.00">1</text>
+</g>
+<!-- SimulationController -->
+<g id="node12" class="node">
+<title>SimulationController</title>
+<polygon fill="none" stroke="black" points="1895.41,-1159.1 1895.41,-1259.1 2373.34,-1259.1 2373.34,-1159.1 1895.41,-1159.1"/>
+<text xml:space="preserve" text-anchor="middle" x="2134.38" y="-1242.5" font-family="Times,serif" font-size="14.00">SimulationController</text>
+<polyline fill="none" stroke="black" points="1895.41,-1234.3 2373.34,-1234.3"/>
+<text xml:space="preserve" text-anchor="start" x="1903.41" y="-1217.7" font-family="Times,serif" font-size="14.00">+ simulate(SimulationRequestDTO) : ResponseEntity&lt;SimulationResponseDTO&gt;</text>
+<text xml:space="preserve" text-anchor="start" x="1903.41" y="-1200.9" font-family="Times,serif" font-size="14.00"> + findByUser(Long) : ResponseEntity&lt;List&lt;SimulationResponseDTO&gt;&gt;</text>
+<text xml:space="preserve" text-anchor="start" x="1903.41" y="-1184.1" font-family="Times,serif" font-size="14.00"> + findById(Long) : ResponseEntity&lt;SimulationResponseDTO&gt;</text>
+<text xml:space="preserve" text-anchor="start" x="1903.41" y="-1167.3" font-family="Times,serif" font-size="14.00"> + delete(Long) : ResponseEntity&lt;Void&gt;</text>
+</g>
+<!-- SimulationService -->
+<g id="node16" class="node">
+<title>SimulationService</title>
+<polygon fill="none" stroke="black" points="1945.5,-845.7 1945.5,-962.5 2323.25,-962.5 2323.25,-845.7 1945.5,-845.7"/>
+<text xml:space="preserve" text-anchor="middle" x="2134.38" y="-945.9" font-family="Times,serif" font-size="14.00">SimulationService</text>
+<polyline fill="none" stroke="black" points="1945.5,-937.7 2323.25,-937.7"/>
+<text xml:space="preserve" text-anchor="start" x="1953.5" y="-921.1" font-family="Times,serif" font-size="14.00">+ findByUserId(Long) : List&lt;SimulationResponseDTO&gt;</text>
+<text xml:space="preserve" text-anchor="start" x="1953.5" y="-904.3" font-family="Times,serif" font-size="14.00"> + simulate(SimulationRequestDTO) : SimulationResponseDTO</text>
+<text xml:space="preserve" text-anchor="start" x="1953.5" y="-887.5" font-family="Times,serif" font-size="14.00"> + findById(Long) : SimulationResponseDTO</text>
+<text xml:space="preserve" text-anchor="start" x="1953.5" y="-870.7" font-family="Times,serif" font-size="14.00"> + deleteById(Long) : void</text>
+<text xml:space="preserve" text-anchor="start" x="1953.5" y="-853.9" font-family="Times,serif" font-size="14.00"> - toResponseDTO(Simulation) : SimulationResponseDTO</text>
+</g>
+<!-- SimulationController&#45;&gt;SimulationService -->
+<g id="edge9" class="edge">
+<title>SimulationController-&gt;SimulationService</title>
+<path fill="none" stroke="#595959" d="M2134.38,-1145.68C2134.38,-1145.68 2134.38,-974.11 2134.38,-974.11"/>
+<polygon fill="#595959" stroke="#595959" points="2134.38,-1145.83 2138.38,-1151.83 2134.38,-1157.83 2130.38,-1151.83 2134.38,-1145.83"/>
+<polygon fill="#595959" stroke="#595959" points="2134.38,-964.11 2138.88,-974.11 2134.38,-967.9 2134.38,-974.11 2134.38,-974.11 2134.38,-974.11 2134.38,-967.9 2129.88,-974.11 2134.38,-964.11"/>
+<text xml:space="preserve" text-anchor="middle" x="2083.83" y="-983.9" font-family="Times,serif" font-size="14.00">simulationService</text>
+<text xml:space="preserve" text-anchor="middle" x="2083.83" y="-967.1" font-family="Times,serif" font-size="14.00">1</text>
+<text xml:space="preserve" text-anchor="middle" x="2130.88" y="-1146.14" font-family="Times,serif" font-size="14.00">1</text>
+</g>
+<!-- SimulationRepository -->
+<g id="node13" class="node">
+<title>SimulationRepository</title>
+<polygon fill="none" stroke="black" points="2544.79,-515.5 2544.79,-581.9 2797.96,-581.9 2797.96,-515.5 2544.79,-515.5"/>
+<text xml:space="preserve" text-anchor="middle" x="2671.38" y="-565.3" font-family="Times,serif" font-size="14.00">&lt;&lt;interface&gt;&gt;</text>
+<text xml:space="preserve" text-anchor="middle" x="2671.38" y="-548.5" font-family="Times,serif" font-size="14.00">SimulationRepository</text>
+<polyline fill="none" stroke="black" points="2544.79,-540.3 2797.96,-540.3"/>
+<text xml:space="preserve" text-anchor="start" x="2552.79" y="-523.7" font-family="Times,serif" font-size="14.00">+ findByUserId(Long) : List&lt;Simulation&gt;</text>
+</g>
+<!-- SimulationRequestDTO -->
+<g id="node14" class="node">
+<title>SimulationRequestDTO</title>
+<polygon fill="none" stroke="black" points="139.54,-1100.3 139.54,-1317.9 437.21,-1317.9 437.21,-1100.3 139.54,-1100.3"/>
+<text xml:space="preserve" text-anchor="middle" x="288.38" y="-1301.3" font-family="Times,serif" font-size="14.00">SimulationRequestDTO</text>
+<polyline fill="none" stroke="black" points="139.54,-1293.1 437.21,-1293.1"/>
+<text xml:space="preserve" text-anchor="start" x="147.54" y="-1276.5" font-family="Times,serif" font-size="14.00">+ getFinancing() : FinancingRequestDTO</text>
+<text xml:space="preserve" text-anchor="start" x="147.54" y="-1259.7" font-family="Times,serif" font-size="14.00"> + getUserId() : Long</text>
+<text xml:space="preserve" text-anchor="start" x="147.54" y="-1242.9" font-family="Times,serif" font-size="14.00"> + getPropertyValue() : BigDecimal</text>
+<text xml:space="preserve" text-anchor="start" x="147.54" y="-1226.1" font-family="Times,serif" font-size="14.00"> + getDownPayment() : BigDecimal</text>
+<text xml:space="preserve" text-anchor="start" x="147.54" y="-1209.3" font-family="Times,serif" font-size="14.00"> + getConsortium() : ConsortiumRequestDTO</text>
+<text xml:space="preserve" text-anchor="start" x="147.54" y="-1192.5" font-family="Times,serif" font-size="14.00"> + setUserId(Long) : void</text>
+<text xml:space="preserve" text-anchor="start" x="147.54" y="-1175.7" font-family="Times,serif" font-size="14.00"> + setConsortium(ConsortiumRequestDTO) : void</text>
+<text xml:space="preserve" text-anchor="start" x="147.54" y="-1158.9" font-family="Times,serif" font-size="14.00"> + setPropertyValue(BigDecimal) : void</text>
+<text xml:space="preserve" text-anchor="start" x="147.54" y="-1142.1" font-family="Times,serif" font-size="14.00"> + builder() : SimulationRequestDTOBuilder</text>
+<text xml:space="preserve" text-anchor="start" x="147.54" y="-1125.3" font-family="Times,serif" font-size="14.00"> + setDownPayment(BigDecimal) : void</text>
+<text xml:space="preserve" text-anchor="start" x="147.54" y="-1108.5" font-family="Times,serif" font-size="14.00"> + setFinancing(FinancingRequestDTO) : void</text>
+</g>
+<!-- SimulationRequestDTO&#45;&gt;ConsortiumRequestDTO -->
+<g id="edge10" class="edge">
+<title>SimulationRequestDTO-&gt;ConsortiumRequestDTO</title>
+<path fill="none" stroke="#595959" d="M206.15,-1086.8C206.15,-1086.8 206.15,-1007.7 206.15,-1007.7"/>
+<polygon fill="#595959" stroke="#595959" points="206.15,-1086.95 210.15,-1092.95 206.15,-1098.95 202.15,-1092.95 206.15,-1086.95"/>
+<polygon fill="#595959" stroke="#595959" points="206.15,-997.7 210.65,-1007.7 206.15,-1001.48 206.15,-1007.7 206.15,-1007.7 206.15,-1007.7 206.15,-1001.48 201.65,-1007.7 206.15,-997.7"/>
+<text xml:space="preserve" text-anchor="middle" x="174.65" y="-1017.48" font-family="Times,serif" font-size="14.00">consortium</text>
+<text xml:space="preserve" text-anchor="middle" x="174.65" y="-1000.68" font-family="Times,serif" font-size="14.00">1</text>
+<text xml:space="preserve" text-anchor="middle" x="202.65" y="-1087.25" font-family="Times,serif" font-size="14.00">1</text>
+</g>
+<!-- SimulationRequestDTO&#45;&gt;FinancingRequestDTO -->
+<g id="edge11" class="edge">
+<title>SimulationRequestDTO-&gt;FinancingRequestDTO</title>
+<path fill="none" stroke="#595959" d="M364.2,-1086.8C364.2,-1086.8 364.2,-990.87 364.2,-990.87"/>
+<polygon fill="#595959" stroke="#595959" points="364.2,-1086.95 368.2,-1092.95 364.2,-1098.95 360.2,-1092.95 364.2,-1086.95"/>
+<polygon fill="#595959" stroke="#595959" points="364.2,-980.87 368.7,-990.87 364.2,-984.65 364.2,-990.87 364.2,-990.87 364.2,-990.87 364.2,-984.65 359.7,-990.87 364.2,-980.87"/>
+<text xml:space="preserve" text-anchor="middle" x="337.76" y="-1000.65" font-family="Times,serif" font-size="14.00">financing</text>
+<text xml:space="preserve" text-anchor="middle" x="337.76" y="-983.85" font-family="Times,serif" font-size="14.00">1</text>
+<text xml:space="preserve" text-anchor="middle" x="360.7" y="-1087.25" font-family="Times,serif" font-size="14.00">1</text>
+</g>
+<!-- SimulationResponseDTO -->
+<g id="node15" class="node">
+<title>SimulationResponseDTO</title>
+<polygon fill="none" stroke="black" points="1028.47,-406.3 1028.47,-691.1 1346.29,-691.1 1346.29,-406.3 1028.47,-406.3"/>
+<text xml:space="preserve" text-anchor="middle" x="1187.38" y="-674.5" font-family="Times,serif" font-size="14.00">SimulationResponseDTO</text>
+<polyline fill="none" stroke="black" points="1028.47,-666.3 1346.29,-666.3"/>
+<text xml:space="preserve" text-anchor="start" x="1036.47" y="-649.7" font-family="Times,serif" font-size="14.00">+ getId() : Long</text>
+<text xml:space="preserve" text-anchor="start" x="1036.47" y="-632.9" font-family="Times,serif" font-size="14.00"> + getPropertyValue() : BigDecimal</text>
+<text xml:space="preserve" text-anchor="start" x="1036.47" y="-616.1" font-family="Times,serif" font-size="14.00"> + setConsortium(ConsortiumResultDTO) : void</text>
+<text xml:space="preserve" text-anchor="start" x="1036.47" y="-599.3" font-family="Times,serif" font-size="14.00"> + setCreatedAt(LocalDateTime) : void</text>
+<text xml:space="preserve" text-anchor="start" x="1036.47" y="-582.5" font-family="Times,serif" font-size="14.00"> + setFinancing(FinancingResultDTO) : void</text>
+<text xml:space="preserve" text-anchor="start" x="1036.47" y="-565.7" font-family="Times,serif" font-size="14.00"> + getDownPayment() : BigDecimal</text>
+<text xml:space="preserve" text-anchor="start" x="1036.47" y="-548.9" font-family="Times,serif" font-size="14.00"> + setDownPayment(BigDecimal) : void</text>
+<text xml:space="preserve" text-anchor="start" x="1036.47" y="-532.1" font-family="Times,serif" font-size="14.00"> + getRecommendation() : RecommendationType</text>
+<text xml:space="preserve" text-anchor="start" x="1036.47" y="-515.3" font-family="Times,serif" font-size="14.00"> + builder() : SimulationResponseDTOBuilder</text>
+<text xml:space="preserve" text-anchor="start" x="1036.47" y="-498.5" font-family="Times,serif" font-size="14.00"> + getCreatedAt() : LocalDateTime</text>
+<text xml:space="preserve" text-anchor="start" x="1036.47" y="-481.7" font-family="Times,serif" font-size="14.00"> + getFinancing() : FinancingResultDTO</text>
+<text xml:space="preserve" text-anchor="start" x="1036.47" y="-464.9" font-family="Times,serif" font-size="14.00"> + getConsortium() : ConsortiumResultDTO</text>
+<text xml:space="preserve" text-anchor="start" x="1036.47" y="-448.1" font-family="Times,serif" font-size="14.00"> + setRecommendation(RecommendationType) : void</text>
+<text xml:space="preserve" text-anchor="start" x="1036.47" y="-431.3" font-family="Times,serif" font-size="14.00"> + setId(Long) : void</text>
+<text xml:space="preserve" text-anchor="start" x="1036.47" y="-414.5" font-family="Times,serif" font-size="14.00"> + setPropertyValue(BigDecimal) : void</text>
+</g>
+<!-- SimulationResponseDTO&#45;&gt;RecommendationType -->
+<g id="edge12" class="edge">
+<title>SimulationResponseDTO-&gt;RecommendationType</title>
+<path fill="none" stroke="#595959" d="M1230.37,-392.81C1230.37,-392.81 1230.37,-229.66 1230.37,-229.66"/>
+<polygon fill="#595959" stroke="#595959" points="1230.37,-392.96 1234.37,-398.96 1230.37,-404.96 1226.37,-398.96 1230.37,-392.96"/>
+<polygon fill="#595959" stroke="#595959" points="1230.37,-219.66 1234.87,-229.66 1230.37,-223.44 1230.37,-229.66 1230.37,-229.66 1230.37,-229.66 1230.37,-223.44 1225.87,-229.66 1230.37,-219.66"/>
+<text xml:space="preserve" text-anchor="middle" x="1277.4" y="-239.44" font-family="Times,serif" font-size="14.00">recommendation</text>
+<text xml:space="preserve" text-anchor="middle" x="1277.4" y="-222.64" font-family="Times,serif" font-size="14.00">1</text>
+<text xml:space="preserve" text-anchor="middle" x="1226.87" y="-393.26" font-family="Times,serif" font-size="14.00">1</text>
+</g>
+<!-- SimulationService&#45;&gt;ConsortiumService -->
+<g id="edge13" class="edge">
+<title>SimulationService-&gt;ConsortiumService</title>
+<path fill="none" stroke="#595959" d="M2024.54,-832.36C2024.54,-832.36 2024.54,-584.98 2024.54,-584.98"/>
+<polygon fill="#595959" stroke="#595959" points="2024.54,-832.51 2028.54,-838.51 2024.54,-844.51 2020.54,-838.51 2024.54,-832.51"/>
+<polygon fill="#595959" stroke="#595959" points="2024.54,-574.98 2029.04,-584.98 2024.54,-578.76 2024.54,-584.98 2024.54,-584.98 2024.54,-584.98 2024.54,-578.76 2020.04,-584.98 2024.54,-574.98"/>
+<text xml:space="preserve" text-anchor="middle" x="1972.05" y="-594.76" font-family="Times,serif" font-size="14.00">consortiumService</text>
+<text xml:space="preserve" text-anchor="middle" x="1972.05" y="-577.96" font-family="Times,serif" font-size="14.00">1</text>
+<text xml:space="preserve" text-anchor="middle" x="2021.04" y="-832.81" font-family="Times,serif" font-size="14.00">1</text>
+</g>
+<!-- SimulationService&#45;&gt;FinancingService -->
+<g id="edge14" class="edge">
+<title>SimulationService-&gt;FinancingService</title>
+<path fill="none" stroke="#595959" d="M2202.5,-832.36C2202.5,-832.36 2202.5,-618.69 2202.5,-618.69"/>
+<polygon fill="#595959" stroke="#595959" points="2202.5,-832.51 2206.5,-838.51 2202.5,-844.51 2198.5,-838.51 2202.5,-832.51"/>
+<polygon fill="#595959" stroke="#595959" points="2202.5,-608.69 2207,-618.69 2202.5,-612.47 2202.5,-618.69 2202.5,-618.69 2202.5,-618.69 2202.5,-612.47 2198,-618.69 2202.5,-608.69"/>
+<text xml:space="preserve" text-anchor="middle" x="2155.08" y="-628.47" font-family="Times,serif" font-size="14.00">financingService</text>
+<text xml:space="preserve" text-anchor="middle" x="2155.08" y="-611.67" font-family="Times,serif" font-size="14.00">1</text>
+<text xml:space="preserve" text-anchor="middle" x="2199" y="-832.81" font-family="Times,serif" font-size="14.00">1</text>
+</g>
+<!-- SimulationService&#45;&gt;SimulationRepository -->
+<g id="edge15" class="edge">
+<title>SimulationService-&gt;SimulationRepository</title>
+<path fill="none" stroke="#595959" d="M2336.8,-904C2336.8,-904 2591.05,-904 2591.05,-904 2591.05,-904 2591.05,-593.34 2591.05,-593.34"/>
+<polygon fill="#595959" stroke="#595959" points="2336.65,-904 2330.65,-908 2324.65,-904 2330.65,-900 2336.65,-904"/>
+<polygon fill="#595959" stroke="#595959" points="2591.05,-583.34 2595.55,-593.34 2591.05,-587.13 2591.05,-593.34 2591.05,-593.34 2591.05,-593.34 2591.05,-587.13 2586.55,-593.34 2591.05,-583.34"/>
+<text xml:space="preserve" text-anchor="middle" x="2651.33" y="-603.13" font-family="Times,serif" font-size="14.00">simulationRepository</text>
+<text xml:space="preserve" text-anchor="middle" x="2651.33" y="-586.33" font-family="Times,serif" font-size="14.00">1</text>
+<text xml:space="preserve" text-anchor="middle" x="2327.25" y="-908.2" font-family="Times,serif" font-size="14.00">1</text>
+</g>
+<!-- UserRepository -->
+<g id="node19" class="node">
+<title>UserRepository</title>
+<polygon fill="none" stroke="black" points="1363.94,-507.1 1363.94,-590.3 1612.82,-590.3 1612.82,-507.1 1363.94,-507.1"/>
+<text xml:space="preserve" text-anchor="middle" x="1488.38" y="-573.7" font-family="Times,serif" font-size="14.00">&lt;&lt;interface&gt;&gt;</text>
+<text xml:space="preserve" text-anchor="middle" x="1488.38" y="-556.9" font-family="Times,serif" font-size="14.00">UserRepository</text>
+<polyline fill="none" stroke="black" points="1363.94,-548.7 1612.82,-548.7"/>
+<text xml:space="preserve" text-anchor="start" x="1371.94" y="-532.1" font-family="Times,serif" font-size="14.00">+ existsByEmail(String) : boolean</text>
+<text xml:space="preserve" text-anchor="start" x="1371.94" y="-515.3" font-family="Times,serif" font-size="14.00"> + findByEmail(String) : Optional&lt;User&gt;</text>
+</g>
+<!-- SimulationService&#45;&gt;UserRepository -->
+<g id="edge16" class="edge">
+<title>SimulationService-&gt;UserRepository</title>
+<path fill="none" stroke="#595959" d="M1985.02,-832.34C1985.02,-832.34 1985.02,-582 1985.02,-582 1985.02,-582 1624.28,-582 1624.28,-582"/>
+<polygon fill="#595959" stroke="#595959" points="1985.02,-832.5 1989.02,-838.5 1985.02,-844.5 1981.02,-838.5 1985.02,-832.5"/>
+<polygon fill="#595959" stroke="#595959" points="1614.28,-582 1624.28,-577.5 1618.06,-582 1624.28,-582 1624.28,-582 1624.28,-582 1618.06,-582 1624.28,-586.5 1614.28,-582"/>
+<text xml:space="preserve" text-anchor="middle" x="1655.44" y="-603" font-family="Times,serif" font-size="14.00">userRepository</text>
+<text xml:space="preserve" text-anchor="middle" x="1655.44" y="-586.2" font-family="Times,serif" font-size="14.00">1</text>
+<text xml:space="preserve" text-anchor="middle" x="1981.52" y="-832.8" font-family="Times,serif" font-size="14.00">1</text>
+</g>
+<!-- UserController -->
+<g id="node18" class="node">
+<title>UserController</title>
+<polygon fill="none" stroke="black" points="1269.46,-1142.3 1269.46,-1275.9 1707.29,-1275.9 1707.29,-1142.3 1269.46,-1142.3"/>
+<text xml:space="preserve" text-anchor="middle" x="1488.38" y="-1259.3" font-family="Times,serif" font-size="14.00">UserController</text>
+<polyline fill="none" stroke="black" points="1269.46,-1251.1 1707.29,-1251.1"/>
+<text xml:space="preserve" text-anchor="start" x="1277.46" y="-1234.5" font-family="Times,serif" font-size="14.00">+ findByEmail(String) : ResponseEntity&lt;UserResponseDTO&gt;</text>
+<text xml:space="preserve" text-anchor="start" x="1277.46" y="-1217.7" font-family="Times,serif" font-size="14.00"> + update(Long, UserRequestDTO) : ResponseEntity&lt;UserResponseDTO&gt;</text>
+<text xml:space="preserve" text-anchor="start" x="1277.46" y="-1200.9" font-family="Times,serif" font-size="14.00"> + findAll() : ResponseEntity&lt;List&lt;UserResponseDTO&gt;&gt;</text>
+<text xml:space="preserve" text-anchor="start" x="1277.46" y="-1184.1" font-family="Times,serif" font-size="14.00"> + create(UserRequestDTO) : ResponseEntity&lt;UserResponseDTO&gt;</text>
+<text xml:space="preserve" text-anchor="start" x="1277.46" y="-1167.3" font-family="Times,serif" font-size="14.00"> + findById(Long) : ResponseEntity&lt;UserResponseDTO&gt;</text>
+<text xml:space="preserve" text-anchor="start" x="1277.46" y="-1150.5" font-family="Times,serif" font-size="14.00"> + delete(Long) : ResponseEntity&lt;Void&gt;</text>
+</g>
+<!-- UserService -->
+<g id="node22" class="node">
+<title>UserService</title>
+<polygon fill="none" stroke="black" points="1321.3,-828.9 1321.3,-979.3 1655.45,-979.3 1655.45,-828.9 1321.3,-828.9"/>
+<text xml:space="preserve" text-anchor="middle" x="1488.38" y="-962.7" font-family="Times,serif" font-size="14.00">UserService</text>
+<polyline fill="none" stroke="black" points="1321.3,-954.5 1655.45,-954.5"/>
+<text xml:space="preserve" text-anchor="start" x="1329.3" y="-937.9" font-family="Times,serif" font-size="14.00">+ create(UserRequestDTO) : UserResponseDTO</text>
+<text xml:space="preserve" text-anchor="start" x="1329.3" y="-921.1" font-family="Times,serif" font-size="14.00"> - toResponseDTO(User) : UserResponseDTO</text>
+<text xml:space="preserve" text-anchor="start" x="1329.3" y="-904.3" font-family="Times,serif" font-size="14.00"> + findById(Long) : UserResponseDTO</text>
+<text xml:space="preserve" text-anchor="start" x="1329.3" y="-887.5" font-family="Times,serif" font-size="14.00"> + update(Long, UserRequestDTO) : UserResponseDTO</text>
+<text xml:space="preserve" text-anchor="start" x="1329.3" y="-870.7" font-family="Times,serif" font-size="14.00"> + findByEmail(String) : UserResponseDTO</text>
+<text xml:space="preserve" text-anchor="start" x="1329.3" y="-853.9" font-family="Times,serif" font-size="14.00"> + findAll() : List&lt;UserResponseDTO&gt;</text>
+<text xml:space="preserve" text-anchor="start" x="1329.3" y="-837.1" font-family="Times,serif" font-size="14.00"> + delete(Long) : void</text>
+</g>
+<!-- UserController&#45;&gt;UserService -->
+<g id="edge17" class="edge">
+<title>UserController-&gt;UserService</title>
+<path fill="none" stroke="#595959" d="M1488.38,-1129.11C1488.38,-1129.11 1488.38,-990.95 1488.38,-990.95"/>
+<polygon fill="#595959" stroke="#595959" points="1488.38,-1129.27 1492.38,-1135.27 1488.38,-1141.27 1484.38,-1135.27 1488.38,-1129.27"/>
+<polygon fill="#595959" stroke="#595959" points="1488.38,-980.95 1492.88,-990.95 1488.38,-984.73 1488.38,-990.95 1488.38,-990.95 1488.38,-990.95 1488.38,-984.73 1483.88,-990.95 1488.38,-980.95"/>
+<text xml:space="preserve" text-anchor="middle" x="1455.72" y="-1000.73" font-family="Times,serif" font-size="14.00">userService</text>
+<text xml:space="preserve" text-anchor="middle" x="1455.72" y="-983.93" font-family="Times,serif" font-size="14.00">1</text>
+<text xml:space="preserve" text-anchor="middle" x="1484.88" y="-1129.57" font-family="Times,serif" font-size="14.00">1</text>
+</g>
+<!-- UserRequestDTO -->
+<g id="node20" class="node">
+<title>UserRequestDTO</title>
+<polygon fill="none" stroke="black" points="2654.89,-1125.5 2654.89,-1292.7 2877.86,-1292.7 2877.86,-1125.5 2654.89,-1125.5"/>
+<text xml:space="preserve" text-anchor="middle" x="2766.38" y="-1276.1" font-family="Times,serif" font-size="14.00">UserRequestDTO</text>
+<polyline fill="none" stroke="black" points="2654.89,-1267.9 2877.86,-1267.9"/>
+<text xml:space="preserve" text-anchor="start" x="2662.89" y="-1251.3" font-family="Times,serif" font-size="14.00">+ getName() : String</text>
+<text xml:space="preserve" text-anchor="start" x="2662.89" y="-1234.5" font-family="Times,serif" font-size="14.00"> + getEmail() : String</text>
+<text xml:space="preserve" text-anchor="start" x="2662.89" y="-1217.7" font-family="Times,serif" font-size="14.00"> + getMonthlyIncome() : Double</text>
+<text xml:space="preserve" text-anchor="start" x="2662.89" y="-1200.9" font-family="Times,serif" font-size="14.00"> + getDownPayment() : Double</text>
+<text xml:space="preserve" text-anchor="start" x="2662.89" y="-1184.1" font-family="Times,serif" font-size="14.00"> + setName(String) : void</text>
+<text xml:space="preserve" text-anchor="start" x="2662.89" y="-1167.3" font-family="Times,serif" font-size="14.00"> + setEmail(String) : void</text>
+<text xml:space="preserve" text-anchor="start" x="2662.89" y="-1150.5" font-family="Times,serif" font-size="14.00"> + setMonthlyIncome(Double) : void</text>
+<text xml:space="preserve" text-anchor="start" x="2662.89" y="-1133.7" font-family="Times,serif" font-size="14.00"> + setDownPayment(Double) : void</text>
+</g>
+<!-- UserResponseDTO -->
+<g id="node21" class="node">
+<title>UserResponseDTO</title>
+<polygon fill="none" stroke="black" points="2895.56,-1100.3 2895.56,-1317.9 3137.19,-1317.9 3137.19,-1100.3 2895.56,-1100.3"/>
+<text xml:space="preserve" text-anchor="middle" x="3016.38" y="-1301.3" font-family="Times,serif" font-size="14.00">UserResponseDTO</text>
+<polyline fill="none" stroke="black" points="2895.56,-1293.1 3137.19,-1293.1"/>
+<text xml:space="preserve" text-anchor="start" x="2903.56" y="-1276.5" font-family="Times,serif" font-size="14.00">+ setId(Long) : void</text>
+<text xml:space="preserve" text-anchor="start" x="2903.56" y="-1259.7" font-family="Times,serif" font-size="14.00"> + getId() : Long</text>
+<text xml:space="preserve" text-anchor="start" x="2903.56" y="-1242.9" font-family="Times,serif" font-size="14.00"> + getName() : String</text>
+<text xml:space="preserve" text-anchor="start" x="2903.56" y="-1226.1" font-family="Times,serif" font-size="14.00"> + getEmail() : String</text>
+<text xml:space="preserve" text-anchor="start" x="2903.56" y="-1209.3" font-family="Times,serif" font-size="14.00"> + setDownPayment(Double) : void</text>
+<text xml:space="preserve" text-anchor="start" x="2903.56" y="-1192.5" font-family="Times,serif" font-size="14.00"> + getMonthlyIncome() : Double</text>
+<text xml:space="preserve" text-anchor="start" x="2903.56" y="-1175.7" font-family="Times,serif" font-size="14.00"> + builder() : UserResponseDTOBuilder</text>
+<text xml:space="preserve" text-anchor="start" x="2903.56" y="-1158.9" font-family="Times,serif" font-size="14.00"> + getDownPayment() : Double</text>
+<text xml:space="preserve" text-anchor="start" x="2903.56" y="-1142.1" font-family="Times,serif" font-size="14.00"> + setName(String) : void</text>
+<text xml:space="preserve" text-anchor="start" x="2903.56" y="-1125.3" font-family="Times,serif" font-size="14.00"> + setEmail(String) : void</text>
+<text xml:space="preserve" text-anchor="start" x="2903.56" y="-1108.5" font-family="Times,serif" font-size="14.00"> + setMonthlyIncome(Double) : void</text>
+</g>
+<!-- UserService&#45;&gt;UserRepository -->
+<g id="edge18" class="edge">
+<title>UserService-&gt;UserRepository</title>
+<path fill="none" stroke="#595959" d="M1488.38,-815.68C1488.38,-815.68 1488.38,-601.86 1488.38,-601.86"/>
+<polygon fill="#595959" stroke="#595959" points="1488.38,-815.83 1492.38,-821.83 1488.38,-827.83 1484.38,-821.83 1488.38,-815.83"/>
+<polygon fill="#595959" stroke="#595959" points="1488.38,-591.86 1492.88,-601.86 1488.38,-595.65 1488.38,-601.86 1488.38,-601.86 1488.38,-601.86 1488.38,-595.65 1483.88,-601.86 1488.38,-591.86"/>
+<text xml:space="preserve" text-anchor="middle" x="1445.99" y="-611.65" font-family="Times,serif" font-size="14.00">userRepository</text>
+<text xml:space="preserve" text-anchor="middle" x="1445.99" y="-594.85" font-family="Times,serif" font-size="14.00">1</text>
+<text xml:space="preserve" text-anchor="middle" x="1484.88" y="-816.13" font-family="Times,serif" font-size="14.00">1</text>
+</g>
+</g>
+</svg>
