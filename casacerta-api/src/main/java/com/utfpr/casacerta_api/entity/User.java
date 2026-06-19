@@ -36,4 +36,7 @@ public class User {
     @DecimalMin("0.0")
     @Column(nullable = false)
     private Double downPayment;
+
+    @Column(name = "password_hash")
+    private String passwordHash;
 }

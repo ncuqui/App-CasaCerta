@@ -1,30 +1,30 @@
 import { useState } from 'react';
 import { useNavigate, Link } from 'react-router-dom';
 import { useSimulation } from '../context/SimulationContext';
-import { findUserByEmail } from '../services/api';
+import { loginUser } from '../services/api';
 
 export default function Login() {
     const navigate = useNavigate();
     const { login } = useSimulation();
     const [email, setEmail] = useState('');
+    const [password, setPassword] = useState('');
+    const [showPassword, setShowPassword] = useState(false);
     const [loading, setLoading] = useState(false);
     const [error, setError] = useState('');
 
     const handleLogin = async () => {
         setError('');
-        if (!email) {
-            setError('Informe seu e-mail.');
+        if (!email || !password) {
+            setError('Informe seu e-mail e senha.');
             return;
         }
         try {
             setLoading(true);
-            const user = await findUserByEmail(email);
-            login(user);
-            // Small timeout to ensure context state is updated before navigating
+            const { token, user } = await loginUser(email, password);
+            login(user, token);
             setTimeout(() => navigate('/menu'), 50);
         } catch (e) {
-            console.error('Login error:', e);
-            setError('E-mail não encontrado. Verifique ou crie uma conta.');
+            setError('E-mail ou senha incorretos.');
         } finally {
             setLoading(false);
         }
@@ -48,7 +48,7 @@ export default function Login() {
                         </div>
                         <h2 className="text-2xl font-bold text-gray-800">Bem-vindo</h2>
                         <p className="text-sm text-gray-500 mt-1">
-                            Acesse com seu e-mail para continuar
+                            Acesse com seu e-mail e senha para continuar
                         </p>
                     </div>
 
@@ -66,6 +66,27 @@ export default function Login() {
                             />
                         </div>
 
+                        <div>
+                            <label className="block text-sm font-semibold text-gray-700 mb-1">Senha</label>
+                            <div className="relative">
+                                <input
+                                    type={showPassword ? 'text' : 'password'}
+                                    value={password}
+                                    onChange={(e) => setPassword(e.target.value)}
+                                    onKeyDown={handleKeyDown}
+                                    placeholder="••••••••"
+                                    className="w-full border border-gray-200 rounded-lg px-4 py-2.5 pr-10 text-sm focus:outline-none focus:ring-2 focus:ring-violet-400"
+                                />
+                                <button
+                                    type="button"
+                                    onClick={() => setShowPassword((v) => !v)}
+                                    className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-400 hover:text-gray-600 text-xs"
+                                >
+                                    {showPassword ? 'Ocultar' : 'Ver'}
+                                </button>
+                            </div>
+                        </div>
+
                         {error && (
                             <p className="text-red-500 text-sm bg-red-50 border border-red-100 rounded-lg px-3 py-2">
                                 {error}
@@ -77,7 +98,7 @@ export default function Login() {
                             disabled={loading}
                             className="w-full bg-violet-600 text-white font-semibold py-2.5 rounded-lg text-sm hover:bg-violet-700 transition-colors disabled:opacity-60"
                         >
-                            {loading ? 'Buscando...' : 'Entrar'}
+                            {loading ? 'Entrando...' : 'Entrar'}
                         </button>
 
                         <div className="text-center">

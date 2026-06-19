@@ -24,4 +24,8 @@ public class UserRequestDTO {
     @NotNull(message = "Down payment is required")
     @DecimalMin(value = "0.0", message = "Value must be positive")
     private Double downPayment;
+
+    @NotBlank(message = "Password is required")
+    @Size(min = 6, message = "Password must be at least 6 characters")
+    private String password;
 }

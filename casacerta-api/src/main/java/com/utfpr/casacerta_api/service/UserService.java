@@ -6,6 +6,7 @@ import com.utfpr.casacerta_api.entity.User;
 import com.utfpr.casacerta_api.repository.UserRepository;
 import jakarta.persistence.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -15,6 +16,7 @@ import java.util.List;
 public class UserService {
 
     private final UserRepository userRepository;
+    private final PasswordEncoder passwordEncoder;
 
     public UserResponseDTO create(UserRequestDTO dto) {
         if (userRepository.existsByEmail(dto.getEmail())) {
@@ -26,6 +28,7 @@ public class UserService {
                 .email(dto.getEmail())
                 .monthlyIncome(dto.getMonthlyIncome())
                 .downPayment(dto.getDownPayment())
+                .passwordHash(passwordEncoder.encode(dto.getPassword()))
                 .build();
 
         return toResponseDTO(userRepository.save(user));

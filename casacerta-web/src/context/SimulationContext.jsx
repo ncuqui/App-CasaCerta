@@ -27,14 +27,16 @@ export function SimulationProvider({ children }) {
 
     const [results, setResults] = useState(null);
 
-    const login = (userData) => {
+    const login = (userData, token) => {
         setUser(userData);
         sessionStorage.setItem('casacerta_user', JSON.stringify(userData));
+        if (token) sessionStorage.setItem('casacerta_token', token);
     };
 
     const logout = () => {
         setUser(null);
         sessionStorage.removeItem('casacerta_user');
+        sessionStorage.removeItem('casacerta_token');
     };
 
     return (
