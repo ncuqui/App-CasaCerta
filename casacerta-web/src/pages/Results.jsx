@@ -157,6 +157,7 @@ export default function Results() {
                                     propertyValue={results.propertyValue}
                                 />
                                 <CostComparisonChart financing={financing} consortium={consortium} />
+                                <AccumulatedCostChart financing={financing} consortium={consortium} />
                                 <InstallmentEvolutionChart financing={financing} consortium={consortium} />
                             </>
                         )}
@@ -567,7 +568,67 @@ function CostComparisonChart({ financing, consortium }) {
     );
 }
 
-// Gráfico 2: LineChart — evolução mensal das parcelas
+// Gráfico 2: LineChart — custo acumulado ao longo do tempo
+function AccumulatedCostChart({ financing, consortium }) {
+    const financed = financing.totalCost - financing.totalInterest;
+    const n = financing.termMonths;
+    const r = Math.pow(1 + financing.annualInterestRate / 100, 1 / 12) - 1;
+    const sacAmortization = financed / n;
+    const priceInstallment = r > 0
+        ? financed * (r * Math.pow(1 + r, n)) / (Math.pow(1 + r, n) - 1)
+        : financed / n;
+    const consortiumMonthly = consortium.monthlyContribution;
+    const maxTerm = Math.max(n, consortium.termMonths);
+    const step = Math.max(1, Math.ceil(maxTerm / 60));
+
+    const data = [];
+    let sacBalance = financed;
+    let cumF = 0;
+    let cumC = 0;
+
+    for (let m = 1; m <= maxTerm; m++) {
+        if (m <= n) {
+            if (financing.amortizationType === 'SAC') {
+                cumF += sacAmortization + sacBalance * r;
+                sacBalance = Math.max(0, sacBalance - sacAmortization);
+            } else {
+                cumF += priceInstallment;
+            }
+        }
+        if (m <= consortium.termMonths) cumC += consortiumMonthly;
+
+        if (m % step === 0 || m === maxTerm) {
+            data.push({ mes: m, Financiamento: Math.round(cumF), Consórcio: Math.round(cumC) });
+        }
+    }
+
+    return (
+        <div className="bg-white rounded-2xl shadow-sm p-5">
+            <h3 className="font-bold text-gray-800 mb-1">Custo acumulado ao longo do tempo</h3>
+            <p className="text-xs text-gray-400 mb-4">Total desembolsado mês a mês em cada modalidade.</p>
+            <ResponsiveContainer width="100%" height={220}>
+                <LineChart data={data} margin={{ top: 4, right: 8, left: 8, bottom: 0 }}>
+                    <CartesianGrid strokeDasharray="3 3" stroke="#f0f0f0" />
+                    <XAxis dataKey="mes" tickFormatter={(v) => `${v}m`} tick={{ fontSize: 11, fill: '#9ca3af' }} axisLine={false} tickLine={false} />
+                    <YAxis tickFormatter={(v) => `R$${(v / 1000).toFixed(0)}k`} tick={{ fontSize: 11, fill: '#9ca3af' }} axisLine={false} tickLine={false} width={56} />
+                    <Tooltip
+                        formatter={(v, name) => [fmtShort(v), name]}
+                        labelFormatter={(l) => `Mês ${l}`}
+                        contentStyle={{ fontSize: 12, borderRadius: 8, border: '1px solid #e5e7eb' }}
+                    />
+                    <Legend wrapperStyle={{ fontSize: 12, paddingTop: 8 }} />
+                    <Line type="monotone" dataKey="Financiamento" stroke="#7c3aed" strokeWidth={2} dot={false} activeDot={{ r: 4 }} connectNulls={false} />
+                    <Line type="monotone" dataKey="Consórcio" stroke="#059669" strokeWidth={2} dot={false} strokeDasharray="5 3" activeDot={{ r: 4 }} connectNulls={false} />
+                </LineChart>
+            </ResponsiveContainer>
+            <p className="text-xs text-gray-400 mt-2 text-center">
+                A linha que chega mais baixo ao fim do prazo representa o menor custo total.
+            </p>
+        </div>
+    );
+}
+
+// Gráfico 3: LineChart — evolução mensal das parcelas
 function InstallmentEvolutionChart({ financing, consortium }) {
     // Recalcula SAC mês a mês para a linha de financiamento
     const financed = financing.totalCost - financing.totalInterest;

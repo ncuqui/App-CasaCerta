@@ -9,6 +9,11 @@ const fmt = (value) =>
         ? `R$ ${Number(value).toLocaleString('pt-BR', { minimumFractionDigits: 0 })}`
         : '—';
 
+const fmtShort = (value) =>
+    value != null
+        ? `R$ ${Number(value).toLocaleString('pt-BR', { minimumFractionDigits: 0, maximumFractionDigits: 0 })}`
+        : '—';
+
 const fmtDate = (iso) =>
     new Date(iso).toLocaleDateString('pt-BR', {
         day: '2-digit', month: 'short', year: 'numeric',
@@ -33,12 +38,17 @@ export default function Dashboard() {
         navigate('/menu/comparacao');
     };
 
+    // Estatísticas rápidas das simulações
+    const totalSims = simulations.length;
+    const bestFinancing = simulations.filter(s => s.recommendation === 'FINANCING').length;
+    const bestConsortium = simulations.filter(s => s.recommendation === 'CONSORTIUM').length;
+
     return (
         <DashboardLayout title="Início">
             <div className="max-w-3xl">
 
                 {/* Welcome banner */}
-                <div className="bg-violet-600 rounded-2xl p-6 text-white mb-6">
+                <div className="bg-violet-600 rounded-2xl p-6 text-white mb-5">
                     <h1 className="text-xl font-bold mb-1">Olá, {user?.name?.split(' ')[0]}! 👋</h1>
                     <p className="text-violet-200 text-sm">
                         Simule e compare financiamento e consórcio para tomar a melhor decisão na compra do seu imóvel.
@@ -50,6 +60,38 @@ export default function Dashboard() {
                         + Nova simulação
                     </button>
                 </div>
+
+                {/* Dados gerais do usuário */}
+                <div className="grid grid-cols-2 gap-3 mb-5">
+                    <div className="bg-white rounded-2xl shadow-sm p-4">
+                        <p className="text-xs text-gray-400 mb-1">Renda mensal</p>
+                        <p className="text-xl font-extrabold text-gray-800">{fmtShort(user?.monthlyIncome)}</p>
+                        <p className="text-xs text-gray-400 mt-1">Capacidade de pagamento</p>
+                    </div>
+                    <div className="bg-white rounded-2xl shadow-sm p-4">
+                        <p className="text-xs text-gray-400 mb-1">Disponível para entrada</p>
+                        <p className="text-xl font-extrabold text-violet-600">{fmtShort(user?.downPayment)}</p>
+                        <p className="text-xs text-gray-400 mt-1">Valor informado no cadastro</p>
+                    </div>
+                </div>
+
+                {/* Estatísticas de simulações */}
+                {!loading && totalSims > 0 && (
+                    <div className="grid grid-cols-3 gap-3 mb-5">
+                        <div className="bg-white rounded-2xl shadow-sm p-4 text-center">
+                            <p className="text-2xl font-extrabold text-gray-800">{totalSims}</p>
+                            <p className="text-xs text-gray-400 mt-1">Simulações realizadas</p>
+                        </div>
+                        <div className="bg-blue-50 rounded-2xl shadow-sm p-4 text-center">
+                            <p className="text-2xl font-extrabold text-blue-700">{bestFinancing}</p>
+                            <p className="text-xs text-gray-400 mt-1">Financiamento venceu</p>
+                        </div>
+                        <div className="bg-green-50 rounded-2xl shadow-sm p-4 text-center">
+                            <p className="text-2xl font-extrabold text-green-700">{bestConsortium}</p>
+                            <p className="text-xs text-gray-400 mt-1">Consórcio venceu</p>
+                        </div>
+                    </div>
+                )}
 
                 {/* Recent simulations */}
                 <div>

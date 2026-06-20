@@ -46,6 +46,33 @@ function monthlyEquivalent(annualRate) {
     return ((Math.pow(1 + rate / 100, 1 / 12) - 1) * 100).toFixed(4);
 }
 
+const fmtCur = (v) =>
+    v != null ? `R$ ${Number(v).toLocaleString('pt-BR', { minimumFractionDigits: 0, maximumFractionDigits: 0 })}` : '—';
+
+// Calcula estimativa de parcela e breakdown de juros/amortização
+function calcInstallmentPreview(propertyValue, downPayment, termMonths, annualInterestRate) {
+    const financed = parseFloat(propertyValue) - parseFloat(downPayment || 0);
+    const n = parseInt(termMonths);
+    const r = Math.pow(1 + parseFloat(annualInterestRate) / 100, 1 / 12) - 1;
+    if (!financed || financed <= 0 || !n || n <= 0 || !r || r <= 0) return null;
+
+    const priceInstallment = financed * (r * Math.pow(1 + r, n)) / (Math.pow(1 + r, n) - 1);
+    const sacAmortization = financed / n;
+    const sacFirstInterest = financed * r;
+    const sacFirstInstallment = sacAmortization + sacFirstInterest;
+    const sacLastInstallment = sacAmortization + sacAmortization * r;
+
+    return {
+        price: Math.round(priceInstallment),
+        sacFirst: Math.round(sacFirstInstallment),
+        sacLast: Math.round(sacLastInstallment),
+        sacAmortization: Math.round(sacAmortization),
+        sacFirstInterest: Math.round(sacFirstInterest),
+        priceAvgAmortization: Math.round(financed / n),
+        priceAvgInterest: Math.round(priceInstallment - financed / n),
+    };
+}
+
 // Gera dados mensais para SAC e PRICE a partir dos inputs do formulário
 function buildAmortizationData(propertyValue, downPayment, termMonths, annualInterestRate) {
     const financed = parseFloat(propertyValue) - parseFloat(downPayment || 0);
@@ -218,6 +245,10 @@ export default function Financing() {
             : null;
 
     const monthlyRate = monthlyEquivalent(financing.annualInterestRate);
+    const installmentPreview = useMemo(
+        () => calcInstallmentPreview(financing.propertyValue, financing.downPayment, financing.termMonths, financing.annualInterestRate),
+        [financing.propertyValue, financing.downPayment, financing.termMonths, financing.annualInterestRate],
+    );
 
     const handleSimulateAlone = async () => {
         setError('');
@@ -361,6 +392,35 @@ export default function Financing() {
                             </div>
                         </div>
 
+                        {/* Mini-cards: comparativo SAC × PRICE antes de escolher */}
+                        {installmentPreview && (
+                            <div className="mb-5">
+                                <p className="text-xs font-semibold text-gray-500 mb-2 uppercase tracking-wide">Estimativa de parcelas</p>
+                                <div className="grid grid-cols-2 gap-3">
+                                    <div className={`rounded-xl p-3 border-2 transition-colors ${financing.amortizationType === 'SAC' ? 'border-blue-400 bg-blue-50' : 'border-gray-100 bg-gray-50'}`}>
+                                        <p className="text-xs font-bold text-blue-700 mb-1">SAC</p>
+                                        <p className="text-sm font-extrabold text-gray-800">{fmtCur(installmentPreview.sacFirst)}</p>
+                                        <p className="text-xs text-gray-400">1ª parcela</p>
+                                        <p className="text-xs text-gray-500 mt-1">até {fmtCur(installmentPreview.sacLast)} (última)</p>
+                                        <div className="mt-2 pt-2 border-t border-blue-100 text-xs text-gray-500 space-y-0.5">
+                                            <p><span className="inline-block w-2 h-2 rounded-sm bg-blue-400 mr-1" />Amort.: {fmtCur(installmentPreview.sacAmortization)}</p>
+                                            <p><span className="inline-block w-2 h-2 rounded-sm bg-orange-400 mr-1" />Juros 1ª: {fmtCur(installmentPreview.sacFirstInterest)}</p>
+                                        </div>
+                                    </div>
+                                    <div className={`rounded-xl p-3 border-2 transition-colors ${financing.amortizationType === 'PRICE' ? 'border-violet-400 bg-violet-50' : 'border-gray-100 bg-gray-50'}`}>
+                                        <p className="text-xs font-bold text-violet-700 mb-1">PRICE</p>
+                                        <p className="text-sm font-extrabold text-gray-800">{fmtCur(installmentPreview.price)}</p>
+                                        <p className="text-xs text-gray-400">parcela fixa</p>
+                                        <p className="text-xs text-gray-500 mt-1">constante por {financing.termMonths} meses</p>
+                                        <div className="mt-2 pt-2 border-t border-violet-100 text-xs text-gray-500 space-y-0.5">
+                                            <p><span className="inline-block w-2 h-2 rounded-sm bg-violet-400 mr-1" />Amort. média: {fmtCur(installmentPreview.priceAvgAmortization)}</p>
+                                            <p><span className="inline-block w-2 h-2 rounded-sm bg-orange-400 mr-1" />Juros médios: {fmtCur(installmentPreview.priceAvgInterest)}</p>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        )}
+
                         {error && <p className="text-red-500 text-sm bg-red-50 border border-red-100 rounded-lg px-3 py-2 mb-4">{error}</p>}
 
                         <div className="flex items-center justify-between">
@@ -386,6 +446,43 @@ export default function Financing() {
                                 <SummaryItem label="Juros mensais" value={monthlyRate ? `${monthlyRate}% a.m.` : '—'} />
                                 <SummaryItem label="Entrada" value={downPercent ? `${downPercent}% do imóvel` : '—'} />
                             </div>
+
+                            {installmentPreview && (
+                                <div className="mt-4 pt-4 border-t border-gray-100">
+                                    <p className="text-xs font-semibold text-gray-600 mb-2">
+                                        Composição da parcela ({financing.amortizationType})
+                                    </p>
+                                    {financing.amortizationType === 'SAC' ? (
+                                        <>
+                                            <div className="text-xs text-gray-700 mb-2 font-semibold">
+                                                1ª parcela: {fmtCur(installmentPreview.sacFirst)}
+                                            </div>
+                                            <div className="flex h-2.5 rounded-full overflow-hidden mb-2">
+                                                <div className="bg-blue-500" style={{ width: `${Math.round(installmentPreview.sacAmortization / installmentPreview.sacFirst * 100)}%` }} />
+                                                <div className="bg-orange-400 flex-1" />
+                                            </div>
+                                            <div className="text-xs text-gray-500 space-y-0.5">
+                                                <div className="flex justify-between"><span><span className="inline-block w-2 h-2 rounded-sm bg-blue-500 mr-1" />Amortização</span><span className="font-semibold">{fmtCur(installmentPreview.sacAmortization)}</span></div>
+                                                <div className="flex justify-between"><span><span className="inline-block w-2 h-2 rounded-sm bg-orange-400 mr-1" />Juros</span><span className="font-semibold">{fmtCur(installmentPreview.sacFirstInterest)}</span></div>
+                                            </div>
+                                        </>
+                                    ) : (
+                                        <>
+                                            <div className="text-xs text-gray-700 mb-2 font-semibold">
+                                                Parcela fixa: {fmtCur(installmentPreview.price)}
+                                            </div>
+                                            <div className="flex h-2.5 rounded-full overflow-hidden mb-2">
+                                                <div className="bg-violet-500" style={{ width: `${Math.round(installmentPreview.priceAvgAmortization / installmentPreview.price * 100)}%` }} />
+                                                <div className="bg-orange-400 flex-1" />
+                                            </div>
+                                            <div className="text-xs text-gray-500 space-y-0.5">
+                                                <div className="flex justify-between"><span><span className="inline-block w-2 h-2 rounded-sm bg-violet-500 mr-1" />Amort. média</span><span className="font-semibold">{fmtCur(installmentPreview.priceAvgAmortization)}</span></div>
+                                                <div className="flex justify-between"><span><span className="inline-block w-2 h-2 rounded-sm bg-orange-400 mr-1" />Juros médios</span><span className="font-semibold">{fmtCur(installmentPreview.priceAvgInterest)}</span></div>
+                                            </div>
+                                        </>
+                                    )}
+                                </div>
+                            )}
                         </div>
                         <div className="bg-violet-50 rounded-2xl p-4 border border-violet-100">
                             <p className="text-xs font-semibold text-violet-700 mb-2">💡 Dicas</p>
