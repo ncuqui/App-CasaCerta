@@ -1,0 +1,15 @@
+# Gradle
+casacerta-api/.gradle/
+casacerta-api/build/
+
+# Node
+casacerta-web/node_modules/
+casacerta-web/dist/
+
+# Claude
+.claude/
+casacerta-web/.claude/
+.vite/
+
+# macOS
+.DS_Store
