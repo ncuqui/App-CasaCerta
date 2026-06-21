@@ -260,7 +260,7 @@ npm run dev
 | 30/05/2026 | v1.2 | Gráficos interativos com Recharts (SAC×PRICE, composição de custo, evolução de parcelas) |
 | 31/05/2026 | v1.3 | Diagramas de entidades (DER) e diagrama de classes adicionados à documentação |
 | 19/06/2026 | v1.4 | Autenticação segura com senha, tokens JWT e histórico de simulações por usuário |
-| 20/06/2026 | v1.5 | Gráficos, dados gerais do usuário e breakdown de taxas (requisitos parciais) |
+| 20/06/2026 | v1.5 | Gráficos, dados gerais do usuário e breakdown de taxas |
 | 20/06/2026 | v1.6 | Organização do repositório: .gitignore e remoção de arquivos de build |
 | 21/06/2026 | v1.7 | Banco H2 local (arquivo), CORS corrigido, handler global de erros, validações, melhorias de qualidade no front e back |
 
@@ -273,7 +273,7 @@ npm run dev
 | Integrante | GitHub | Contribuições principais |
 |---|---|---|
 | Natália Cuqui Barbosa | [@ncuqui](https://github.com/ncuqui) | Repositório, documentação, protótipos, README |
-| Débora Batista Pereira de Almeida | [@deborabat](https://github.com/deborabat) | — |
+| Débora Batista Pereira de Almeida | [@deborabat](https://github.com/deborabat) | documentação, autenticacao jwt, melhorias finais no projeto |
 | Davi Leme de Castro Nascimento Batista | [@devdvi](https://github.com/devdvi) | Back-end completo, front-end React, gráficos, melhorias UX |
 
 ---
