@@ -20,16 +20,17 @@ const fmtDate = (iso) =>
     });
 
 export default function Dashboard() {
-    const { user, setResults } = useSimulation();
+    const { user, setResults, resetSimulation } = useSimulation();
     const navigate = useNavigate();
     const [simulations, setSimulations] = useState([]);
     const [loading, setLoading] = useState(true);
+    const [loadError, setLoadError] = useState('');
 
     useEffect(() => {
         if (!user) return;
         getUserSimulations(user.id)
-            .then((data) => setSimulations(data.slice(0, 5))) // últimas 5
-            .catch(() => {})
+            .then((data) => setSimulations(data.slice(0, 5)))
+            .catch((err) => setLoadError(err.message || 'Erro ao carregar simulações.'))
             .finally(() => setLoading(false));
     }, [user]);
 
@@ -54,12 +55,18 @@ export default function Dashboard() {
                         Simule e compare financiamento e consórcio para tomar a melhor decisão na compra do seu imóvel.
                     </p>
                     <button
-                        onClick={() => navigate('/menu/financiamento')}
+                        onClick={() => { resetSimulation(); navigate('/menu/financiamento'); }}
                         className="mt-4 bg-white text-violet-700 font-semibold px-5 py-2 rounded-lg text-sm hover:bg-violet-50 transition-colors"
                     >
                         + Nova simulação
                     </button>
                 </div>
+
+                {loadError && (
+                    <p className="text-red-500 text-sm bg-red-50 border border-red-100 rounded-lg px-3 py-2 mb-4">
+                        {loadError}
+                    </p>
+                )}
 
                 {/* Dados gerais do usuário */}
                 <div className="grid grid-cols-2 gap-3 mb-5">

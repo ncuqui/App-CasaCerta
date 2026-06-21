@@ -31,6 +31,11 @@ public class SimulationService {
             throw new IllegalArgumentException("At least one modality (financing or consortium) must be provided.");
         }
 
+        if (dto.getDownPayment() != null && dto.getPropertyValue() != null
+                && dto.getDownPayment().compareTo(dto.getPropertyValue()) >= 0) {
+            throw new IllegalArgumentException("Down payment must be less than property value.");
+        }
+
         User user = userRepository.findById(dto.getUserId())
                 .orElseThrow(() -> new EntityNotFoundException("User not found with id: " + dto.getUserId()));
 

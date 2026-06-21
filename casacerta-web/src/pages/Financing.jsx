@@ -3,41 +3,11 @@ import { useNavigate } from 'react-router-dom';
 import DashboardLayout from '../components/DashboardLayout';
 import { useSimulation } from '../context/SimulationContext';
 import { runSimulation } from '../services/api';
+import { toRawNumber, toMasked, MoneyInput } from '../utils/currency';
 import {
     LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip,
     Legend, ResponsiveContainer,
 } from 'recharts';
-
-// ---- Currency mask helpers ----
-function toRawNumber(masked) {
-    if (!masked) return '';
-    const digits = masked.replace(/\D/g, '');
-    return digits ? String(parseInt(digits, 10)) : '';
-}
-
-function toMasked(raw) {
-    if (!raw) return '';
-    return parseInt(raw, 10).toLocaleString('pt-BR');
-}
-
-function MoneyInput({ name, value, onChange, placeholder, disabled, className }) {
-    const handleChange = (e) => {
-        const raw = toRawNumber(e.target.value);
-        onChange({ target: { name, value: raw } });
-    };
-    return (
-        <input
-            name={name}
-            type="text"
-            inputMode="numeric"
-            value={toMasked(value)}
-            onChange={handleChange}
-            placeholder={placeholder}
-            disabled={disabled}
-            className={className}
-        />
-    );
-}
 
 // Converte taxa anual (%) para mensal equivalente (%)
 function monthlyEquivalent(annualRate) {

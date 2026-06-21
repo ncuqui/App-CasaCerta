@@ -1,3 +1,4 @@
+import { useMemo } from 'react';
 import { useNavigate } from 'react-router-dom';
 import DashboardLayout from '../components/DashboardLayout';
 import { useSimulation } from '../context/SimulationContext';
@@ -80,7 +81,8 @@ function calcConsortiumBreakdown(consortium, propertyValue) {
 
 export default function Results() {
     const navigate = useNavigate();
-    const { results } = useSimulation();
+    const { results, resetSimulation } = useSimulation();
+    const goNewSimulation = () => { resetSimulation(); navigate('/menu/financiamento'); };
 
     if (!results) {
         return (
@@ -88,7 +90,7 @@ export default function Results() {
                 <div className="flex items-center justify-center h-64">
                     <div className="text-center">
                         <p className="text-gray-400 mb-3">Nenhuma simulação encontrada.</p>
-                        <button onClick={() => navigate('/menu/financiamento')}
+                        <button onClick={goNewSimulation}
                                 className="bg-violet-600 text-white px-5 py-2.5 rounded-lg text-sm font-semibold">
                             Iniciar simulação
                         </button>
@@ -178,7 +180,7 @@ export default function Results() {
 
                         {/* Actions */}
                         <div className="flex gap-3">
-                            <button onClick={() => navigate('/menu/financiamento')}
+                            <button onClick={goNewSimulation}
                                     className="px-4 py-2.5 border border-gray-200 text-gray-600 font-semibold rounded-lg text-sm hover:bg-gray-50 transition-colors">
                                 Nova simulação
                             </button>
@@ -189,7 +191,7 @@ export default function Results() {
                                 </button>
                             )}
                             {hasOnlyConsortium && (
-                                <button onClick={() => navigate('/menu/financiamento')}
+                                <button onClick={goNewSimulation}
                                         className="px-4 py-2.5 bg-violet-600 text-white font-semibold rounded-lg text-sm hover:bg-violet-700 transition-colors">
                                     Comparar com Financiamento →
                                 </button>
@@ -570,37 +572,39 @@ function CostComparisonChart({ financing, consortium }) {
 
 // Gráfico 2: LineChart — custo acumulado ao longo do tempo
 function AccumulatedCostChart({ financing, consortium }) {
-    const financed = financing.totalCost - financing.totalInterest;
-    const n = financing.termMonths;
-    const r = Math.pow(1 + financing.annualInterestRate / 100, 1 / 12) - 1;
-    const sacAmortization = financed / n;
-    const priceInstallment = r > 0
-        ? financed * (r * Math.pow(1 + r, n)) / (Math.pow(1 + r, n) - 1)
-        : financed / n;
-    const consortiumMonthly = consortium.monthlyContribution;
-    const maxTerm = Math.max(n, consortium.termMonths);
-    const step = Math.max(1, Math.ceil(maxTerm / 60));
+    const data = useMemo(() => {
+        const financed = financing.totalCost - financing.totalInterest;
+        const n = financing.termMonths;
+        const r = Math.pow(1 + financing.annualInterestRate / 100, 1 / 12) - 1;
+        const sacAmortization = financed / n;
+        const priceInstallment = r > 0
+            ? financed * (r * Math.pow(1 + r, n)) / (Math.pow(1 + r, n) - 1)
+            : financed / n;
+        const consortiumMonthly = consortium.monthlyContribution;
+        const maxTerm = Math.max(n, consortium.termMonths);
+        const step = Math.max(1, Math.ceil(maxTerm / 60));
 
-    const data = [];
-    let sacBalance = financed;
-    let cumF = 0;
-    let cumC = 0;
+        const points = [];
+        let sacBalance = financed;
+        let cumF = 0;
+        let cumC = 0;
 
-    for (let m = 1; m <= maxTerm; m++) {
-        if (m <= n) {
-            if (financing.amortizationType === 'SAC') {
-                cumF += sacAmortization + sacBalance * r;
-                sacBalance = Math.max(0, sacBalance - sacAmortization);
-            } else {
-                cumF += priceInstallment;
+        for (let m = 1; m <= maxTerm; m++) {
+            if (m <= n) {
+                if (financing.amortizationType === 'SAC') {
+                    cumF += sacAmortization + sacBalance * r;
+                    sacBalance = Math.max(0, sacBalance - sacAmortization);
+                } else {
+                    cumF += priceInstallment;
+                }
+            }
+            if (m <= consortium.termMonths) cumC += consortiumMonthly;
+            if (m % step === 0 || m === maxTerm) {
+                points.push({ mes: m, Financiamento: Math.round(cumF), Consórcio: Math.round(cumC) });
             }
         }
-        if (m <= consortium.termMonths) cumC += consortiumMonthly;
-
-        if (m % step === 0 || m === maxTerm) {
-            data.push({ mes: m, Financiamento: Math.round(cumF), Consórcio: Math.round(cumC) });
-        }
-    }
+        return points;
+    }, [financing, consortium]);
 
     return (
         <div className="bg-white rounded-2xl shadow-sm p-5">
@@ -630,33 +634,32 @@ function AccumulatedCostChart({ financing, consortium }) {
 
 // Gráfico 3: LineChart — evolução mensal das parcelas
 function InstallmentEvolutionChart({ financing, consortium }) {
-    // Recalcula SAC mês a mês para a linha de financiamento
-    const financed = financing.totalCost - financing.totalInterest;
-    const n = financing.termMonths;
-    const r = Math.pow(1 + financing.annualInterestRate / 100, 1 / 12) - 1;
-    const sacAmortization = financed / n;
-    const priceInstallment = r > 0
-        ? financed * (r * Math.pow(1 + r, n)) / (Math.pow(1 + r, n) - 1)
-        : financed / n;
-    const consortiumMonthly = consortium.monthlyContribution;
+    const { data, financingKey } = useMemo(() => {
+        const financed = financing.totalCost - financing.totalInterest;
+        const n = financing.termMonths;
+        const r = Math.pow(1 + financing.annualInterestRate / 100, 1 / 12) - 1;
+        const sacAmortization = financed / n;
+        const priceInstallment = r > 0
+            ? financed * (r * Math.pow(1 + r, n)) / (Math.pow(1 + r, n) - 1)
+            : financed / n;
+        const consortiumMonthly = consortium.monthlyContribution;
+        const maxTerm = Math.max(n, consortium.termMonths);
+        const step = Math.max(1, Math.ceil(maxTerm / 60));
+        const fKey = financing.amortizationType === 'SAC' ? 'Financiamento (SAC)' : 'Financiamento (PRICE)';
 
-    // Prazo máximo entre as duas modalidades
-    const maxTerm = Math.max(n, consortium.termMonths);
-    const step = Math.max(1, Math.ceil(maxTerm / 60));
+        const points = [];
+        let sacBalance = financed;
 
-    const data = [];
-    let sacBalance = financed;
+        for (let m = 1; m <= maxTerm; m += step) {
+            const point = { mes: m };
 
-    for (let m = 1; m <= maxTerm; m += step) {
-        const point = { mes: m };
-
-        if (m <= n) {
-            const sacInterest = sacBalance * r;
-            if (financing.amortizationType === 'SAC') {
-                point['Financiamento (SAC)'] = Math.round(sacAmortization + sacInterest);
-            } else {
-                point['Financiamento (PRICE)'] = Math.round(priceInstallment);
-            }
+            if (m <= n) {
+                const sacInterest = sacBalance * r;
+                if (financing.amortizationType === 'SAC') {
+                    point['Financiamento (SAC)'] = Math.round(sacAmortization + sacInterest);
+                } else {
+                    point['Financiamento (PRICE)'] = Math.round(priceInstallment);
+                }
             for (let s = 0; s < step && sacBalance > 0; s++) {
                 sacBalance = Math.max(0, sacBalance - sacAmortization);
             }
@@ -666,10 +669,11 @@ function InstallmentEvolutionChart({ financing, consortium }) {
             point['Consórcio'] = Math.round(consortiumMonthly);
         }
 
-        data.push(point);
+        points.push(point);
     }
 
-    const financingKey = financing.amortizationType === 'SAC' ? 'Financiamento (SAC)' : 'Financiamento (PRICE)';
+        return { data: points, financingKey: fKey };
+    }, [financing, consortium]);
 
     return (
         <div className="bg-white rounded-2xl shadow-sm p-5">

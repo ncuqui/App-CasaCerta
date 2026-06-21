@@ -59,7 +59,7 @@ App-CasaCerta/
 | Spring Boot | 4.0.6 | Framework REST API |
 | Spring Data JPA | — | ORM e acesso ao banco |
 | Hibernate | — | Implementação JPA |
-| MySQL | — | Banco de dados relacional |
+| H2 Database | — | Banco de dados local (arquivo) |
 | Gradle | 9.4 | Gerenciamento de build |
 | Lombok | — | Redução de boilerplate |
 
@@ -88,7 +88,7 @@ App-CasaCerta/
 └──────────────────┬──────────────────────┘
                    │ JPA / Hibernate
 ┌──────────────────▼──────────────────────┐
-│        MySQL · banco: casacerta         │
+│     H2 (arquivo local) · casacerta      │
 │                                         │
 │  users · simulations                   │
 │  financing_simulations                  │
@@ -188,8 +188,9 @@ Base URL: `http://localhost:8080/api`
 ## 🖥️ Funcionalidades Implementadas
 
 ### Autenticação e Cadastro
-- Login por e-mail (sem senha), sessão salva em `sessionStorage`
-- Cadastro com nome, e-mail, renda mensal e valor disponível para entrada
+- Login por e-mail e senha com autenticação JWT
+- Sessão salva em `sessionStorage`
+- Cadastro com nome, e-mail, senha, renda mensal e valor disponível para entrada
 
 ### Simulação de Financiamento
 - Campos: valor do imóvel, entrada, prazo (meses ou anos), taxa anual, tipo de amortização
@@ -224,19 +225,16 @@ Base URL: `http://localhost:8080/api`
 ### Pré-requisitos
 - Node.js 18+
 - Java 17+
-- MySQL rodando localmente
+- Nenhum banco de dados externo necessário (H2 embutido)
 
 ### Back-end
 
 ```bash
-# Configure o banco no application.properties
-# spring.datasource.url=jdbc:mysql://localhost:3306/casacerta
-# spring.datasource.username=seu_usuario
-# spring.datasource.password=sua_senha
-
 cd casacerta-api
 ./gradlew bootRun
 # API disponível em http://localhost:8080
+# Console H2 disponível em http://localhost:8080/h2-console
+# (JDBC URL: jdbc:h2:file:./data/casacerta)
 ```
 
 ### Front-end
@@ -258,8 +256,13 @@ npm run dev
 | 05/04/2026 | — | Atualização de links e documentação |
 | 16/05/2026 | Back-end v1.0 | API REST completa com todos os endpoints e motor de simulação |
 | 17/05/2026 | Front-end v1.0 | Aplicação React completa + melhorias UX (prazo aberto, taxa mensal, lance fixo/variável) |
-| 28/05/2026 | v1.1 | Resultados enriquecidos: hero de métricas, breakdown de taxas nas parcelas |
-| 28/05/2026 | v1.2 | Gráficos interativos com Recharts (SAC×PRICE, composição de custo, evolução de parcelas) |
+| 30/05/2026 | v1.1 | Resultados enriquecidos: hero de métricas, breakdown de taxas nas parcelas |
+| 30/05/2026 | v1.2 | Gráficos interativos com Recharts (SAC×PRICE, composição de custo, evolução de parcelas) |
+| 31/05/2026 | v1.3 | Diagramas de entidades (DER) e diagrama de classes adicionados à documentação |
+| 19/06/2026 | v1.4 | Autenticação segura com senha, tokens JWT e histórico de simulações por usuário |
+| 20/06/2026 | v1.5 | Gráficos, dados gerais do usuário e breakdown de taxas (requisitos parciais) |
+| 20/06/2026 | v1.6 | Organização do repositório: .gitignore e remoção de arquivos de build |
+| 21/06/2026 | v1.7 | Banco H2 local (arquivo), CORS corrigido, handler global de erros, validações, melhorias de qualidade no front e back |
 
 ---
 

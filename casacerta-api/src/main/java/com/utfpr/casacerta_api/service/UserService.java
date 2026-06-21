@@ -61,6 +61,9 @@ public class UserService {
         user.setEmail(dto.getEmail());
         user.setMonthlyIncome(dto.getMonthlyIncome());
         user.setDownPayment(dto.getDownPayment());
+        if (dto.getPassword() != null && !dto.getPassword().isBlank()) {
+            user.setPasswordHash(passwordEncoder.encode(dto.getPassword()));
+        }
 
         return toResponseDTO(userRepository.save(user));
     }

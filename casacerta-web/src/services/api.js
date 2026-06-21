@@ -1,7 +1,13 @@
 const BASE_URL = 'http://localhost:8080/api';
+const TIMEOUT_MS = 8000;
+
+export const STORAGE_KEYS = {
+    USER: 'casacerta_user',
+    TOKEN: 'casacerta_token',
+};
 
 function getToken() {
-    return sessionStorage.getItem('casacerta_token');
+    return sessionStorage.getItem(STORAGE_KEYS.TOKEN);
 }
 
 async function request(path, options = {}) {
@@ -9,12 +15,27 @@ async function request(path, options = {}) {
     const headers = { 'Content-Type': 'application/json', ...options.headers };
     if (token) headers['Authorization'] = `Bearer ${token}`;
 
-    const res = await fetch(`${BASE_URL}${path}`, { ...options, headers });
-    if (!res.ok) {
-        const error = await res.json().catch(() => ({}));
-        throw new Error(error.message || `Request failed: ${res.status}`);
+    const controller = new AbortController();
+    const timeoutId = setTimeout(() => controller.abort(), TIMEOUT_MS);
+
+    try {
+        const res = await fetch(`${BASE_URL}${path}`, {
+            ...options,
+            headers,
+            signal: controller.signal,
+        });
+        clearTimeout(timeoutId);
+
+        if (!res.ok) {
+            const error = await res.json().catch(() => ({}));
+            throw new Error(error.message || `Request failed: ${res.status}`);
+        }
+        return res.json();
+    } catch (err) {
+        clearTimeout(timeoutId);
+        if (err.name === 'AbortError') throw new Error('Tempo limite da requisição esgotado. Verifique sua conexão.');
+        throw err;
     }
-    return res.json();
 }
 
 export const loginUser = (email, password) =>
@@ -38,9 +59,24 @@ export const deleteSimulation = async (id) => {
     const token = getToken();
     const headers = { 'Content-Type': 'application/json' };
     if (token) headers['Authorization'] = `Bearer ${token}`;
-    const res = await fetch(`${BASE_URL}/simulations/${id}`, { method: 'DELETE', headers });
-    if (!res.ok) {
-        const error = await res.json().catch(() => ({}));
-        throw new Error(error.message || `Delete failed: ${res.status}`);
+
+    const controller = new AbortController();
+    const timeoutId = setTimeout(() => controller.abort(), TIMEOUT_MS);
+
+    try {
+        const res = await fetch(`${BASE_URL}/simulations/${id}`, {
+            method: 'DELETE',
+            headers,
+            signal: controller.signal,
+        });
+        clearTimeout(timeoutId);
+        if (!res.ok) {
+            const error = await res.json().catch(() => ({}));
+            throw new Error(error.message || `Delete failed: ${res.status}`);
+        }
+    } catch (err) {
+        clearTimeout(timeoutId);
+        if (err.name === 'AbortError') throw new Error('Tempo limite da requisição esgotado.');
+        throw err;
     }
 };
