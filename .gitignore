@@ -2,6 +2,9 @@
 casacerta-api/.gradle/
 casacerta-api/build/
 
+# H2 local database
+casacerta-api/data/
+
 # Node
 casacerta-web/node_modules/
 casacerta-web/dist/
